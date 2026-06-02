@@ -352,7 +352,7 @@
                                     </p>
                                     <p class="mt-1 text-sm text-gray-400 mb-3"> Maks 5MB - Format: JPG, PNG </p>
                                     <input id="photo" name="photo" type="file" accept=".jpg,.jpeg,.png"
-                                        class="mb-4 text-gray-400 file-input" required>
+                                        class="mb-4 text-gray-400 file-input hidden" required>
                                     <!-- Preview -->
 
                                     <div class="upload-placeholder ">
@@ -412,12 +412,12 @@
                                     </p>
 
                                     <input type="file" id="birth_certificate" name="birth_certificate"
-                                        class="file-input hidden" accept=".jpg,.jpeg,.png,.pdf" required>
+                                        class="mb-4 text-gray-400 file-input hidden" accept=".jpg,.jpeg,.png,.pdf"
+                                        required>
                                     <!-- Preview -->
                                     <div class="upload-placeholder">
                                     </div>
-                                    <div class="file-preview hiddenn w-full"></div>
-                                        {{-- contoh comment --}}
+                                    <div class="file-preview hidden w-full"></div>
                                 </label>
 
                             </div>
@@ -434,131 +434,142 @@
                                 Kartu Keluarga
                                 <span class="text-red-500">*</span>
                             </label>
-
-                            <label for="family_card"
-                                class="group flex flex-col items-center justify-center
-                   w-full h-32
+                            <div class="upload-container">
+                                <label for="family_card"
+                                    class="upload-box flex flex-col items-center justify-center
+                   w-full h-50
                    rounded-2xl
                    border border-dashed border-gray-300
                    bg-white
                    cursor-pointer
                    hover:border-teal-400
-                   hover:bg-gray-50
-                   transition">
+                   hover:bg-teal-50
+                   transition mb-5">
 
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-500 mb-2"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-500 mb-2 mt-4"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
 
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1" />
 
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                        d="M12 4v12" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                            d="M12 4v12" />
 
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                        d="M8 8l4-4 4 4" />
-                                </svg>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                            d="M8 8l4-4 4 4" />
+                                    </svg>
 
-                                <p class="text-[15px] text-gray-600">
-                                    Seret file ke sini atau klik untuk memilih
-                                </p>
+                                    <p class="text-[18px] text-gray-600">
+                                        Seret file ke sini atau klik untuk memilih
+                                    </p>
 
-                                <p class="mt-1 text-sm text-gray-400">
-                                    Maks 5MB - Format: JPG, PNG, PDF
-                                </p>
+                                    <p class="mt-1 mb-3 text-sm text-gray-400">
+                                        Maks 5MB - Format: JPG, PNG, PDF
+                                    </p>
 
-                                <input id="family_card" type="file" accept=".jpg,.jpeg,.png,.pdf" class="hidden">
+                                    <input id="family_card" name="family_card" type="file"
+                                        accept=".jpg,.jpeg,.png,.pdf" class="mb-4 text-gray-400 file-input hidden"
+                                        required>
+                                    <div class="upload-placeholder">
+                                    </div>
+                                    <div class="file-preview hidden w-full"></div>
+                                </label>
+                            </div>
 
-                            </label>
-                        </div>
 
-
-                        <!-- IJAZAH -->
-                        <div class="mb-5">
-                            <label class="block mb-3 text-[18px] font-semibold text-gray-900">
-                                Ijazah/SKL Terakhir
-                                <span class="text-red-500">*</span>
-                            </label>
-
-                            <label for="certificate"
-                                class="group flex flex-col items-center justify-center
-                   w-full h-32
+                            <!-- IJAZAH -->
+                            <div class="mb-5">
+                                <label class="block mb-3 text-[18px] font-semibold text-gray-900">
+                                    Ijazah/SKL Terakhir
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <div class="upload-container">
+                                    <label for="certificate"
+                                        class="upload-box flex flex-col items-center justify-center
+                   w-full h-50
                    rounded-2xl
                    border border-dashed border-gray-300
                    bg-white
                    cursor-pointer
                    hover:border-teal-400
-                   hover:bg-gray-50
-                   transition">
+                   hover:bg-teal-50
+                   transition ">
 
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-500 mb-2"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="w-10 h-10 text-gray-500 mb-2 mt-4" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
 
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1" />
 
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                        d="M12 4v12" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                                d="M12 4v12" />
 
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                        d="M8 8l4-4 4 4" />
-                                </svg>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                                d="M8 8l4-4 4 4" />
+                                        </svg>
 
-                                <p class="text-[15px] text-gray-600">
-                                    Seret file ke sini atau klik untuk memilih
-                                </p>
+                                        <p class="text-[18px] text-gray-600">
+                                            Seret file ke sini atau klik untuk memilih
+                                        </p>
 
-                                <p class="mt-1 text-sm text-gray-400">
-                                    Maks 5MB - Format: JPG, PNG, PDF
-                                </p>
+                                        <p class="mt-1 mb-3 text-sm text-gray-400">
+                                            Maks 5MB - Format: JPG, PNG, PDF
+                                        </p>
 
-                                <input id="certificate" type="file" accept=".jpg,.jpeg,.png,.pdf" class="hidden">
-                            </label>
-                        </div>
+                                        <input id="certificate" name="certificate" type="file"
+                                            accept=".jpg,.jpeg,.png,.pdf" class="mb-4 text-gray-400 file-input hidden"
+                                            required>
+                                        <div class="upload-placeholder">
+                                        </div>
+                                        <div class="file-preview hiddenn w-full"></div>
+                                    </label>
+                                </div>
 
 
-                        <!-- FOOTER BUTTON -->
-                        <div class="mt-8 pt-6 border-t border-gray-200
+                                <!-- FOOTER BUTTON -->
+                                <div
+                                    class="mt-8 pt-6 border-t border-gray-200
         flex items-center justify-between">
 
-                            <!-- Button Sebelumnya -->
-                            <a href="{{ route('pendaftaransiswa.step6') }}"
-                                class="flex items-center gap-2 px-6 py-3
+                                    <!-- Button Sebelumnya -->
+                                    <a href="{{ route('pendaftaransiswa.step6') }}"
+                                        class="flex items-center gap-2 px-6 py-3
     rounded-xl border border-gray-300
     text-gray-500 bg-gray-100
     hover:bg-gray-200 transition">
 
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
 
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 19l-7-7 7-7" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 19l-7-7 7-7" />
 
-                                </svg>
-                                Sebelumnya
-                            </a>
+                                        </svg>
+                                        Sebelumnya
+                                    </a>
 
 
-                            <!-- Button Selanjutnya -->
-                            <button type="submit"
-                                class="flex items-center gap-2 px-8 py-3
+                                    <!-- Button Selanjutnya -->
+                                    <button type="submit"
+                                        class="flex items-center gap-2 px-8 py-3
             rounded-xl bg-teal-700 text-white
             hover:bg-teal-800 transition">
 
-                                Selanjutnya
+                                        Selanjutnya
 
-                                <!-- ICON -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
+                                        <!-- ICON -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
 
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7" />
 
-                                </svg>
+                                        </svg>
 
-                            </button>
+                                    </button>
 
-                        </div>
+                                </div>
 
             </form>
         </div>
