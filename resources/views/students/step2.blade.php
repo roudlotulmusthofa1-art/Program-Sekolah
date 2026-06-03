@@ -178,11 +178,19 @@
                         [
                             'label' => 'Motivasi',
                             'icon' => '
-                    <svg class="w- h-5 text-gray-800 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M5 12l14-7-7 14-2-5-5-2z">
-                        </path>
-                    </svg>
+                    <svg class="w- h-5 fill-gray-600" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" viewBox="0 0 240 240">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="
+    M 220,20
+    L 10,105
+    L 75,125
+    L 155,60
+    L 95,135
+    L 95,200
+    L 130,165
+    L 175,195
+    L 220,20
+    Z"/>
+</svg>
                 ',
                         ],
 

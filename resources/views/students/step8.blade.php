@@ -22,6 +22,8 @@
     </script>
 </head>
 
+
+
 <body class="bg-gray-100">
 
     <!-- HEADER -->
@@ -60,12 +62,12 @@
         <div class="max-w-7xl mx-auto p-6">
 
             <div class="flex justify-between items-center text-sm mb-2 text-primary-teal font-medium">
-                <span>Step 6 dari 9</span>
-                <span>60% selesai</span>
+                <span>Step 8 dari 9</span>
+                <span>86% selesai</span>
             </div>
 
             <div class="w-full bg-inactive-gray rounded-full h-1.5 mb-6">
-                <div class="bg-yellow-400 h-1.5 rounded-full" style="width: 60%"></div>
+                <div class="bg-yellow-400 h-1.5 rounded-full" style="width: 86%"></div>
             </div>
 
             <div class="flex justify-center gap-4 md:gap-8 text-center flex-wrap">
@@ -199,6 +201,59 @@
                     </span>
                 </div>
 
+                <!-- STEP 6 : SELESAI -->
+                <div class="flex flex-col items-center">
+                    <div
+                        class="w-12 h-12 rounded-full
+            bg-teal-600 border-2 border-teal-700
+            text-teal-600
+            flex items-center justify-center
+             mb-2">
+
+
+                        <!-- ICON  -->
+                        <svg class="w-5 h-5 text-gray-800 dark:text-gray-100" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="lucide lucide-circle-check-big w-6 h-6">
+                            <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                            <path d="m9 11 3 3L22 4"></path>
+                        </svg>
+
+                    </div>
+
+                    <span class="text-xs text-primary-teal font-medium">
+                        Info Lainya
+                    </span>
+                </div>
+
+ <!-- STEP 7: SELESAI -->
+                <div class="flex flex-col items-center">
+                    <div
+                        class="w-12 h-12 rounded-full
+            bg-teal-600 border-2 border-teal-700
+            text-teal-600
+            flex items-center justify-center
+             mb-2">
+
+
+                        <!-- ICON  -->
+                        <svg class="w-5 h-5 text-gray-800 dark:text-gray-100" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="lucide lucide-circle-check-big w-6 h-6">
+                            <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                            <path d="m9 11 3 3L22 4"></path>
+                        </svg>
+
+                    </div>
+
+                    <span class="text-xs text-primary-teal font-medium">
+                        Documen
+                    </span>
+                </div>
+
+
                 <!-- STEP AKTIF -->
                 <div class="flex flex-col items-center">
                     <div
@@ -209,38 +264,7 @@
             ring-4 ring-teal-200 mb-2">
 
                         <!-- ICON  -->
-                        <svg class="w- h-5 text-gray-800 dark:text-teal-600" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 16v-4m0-4h.01">
-                            </path>
-                        </svg>
-
-                    </div>
-
-                    <span class="text-xs text-primary-teal font-medium">
-                        Info Lainya
-                    </span>
-                </div>
-
-                @php
-                    $steps = [
-                        [
-                            'label' => 'Dokumen',
-                            'icon' => '
-                    <svg class="w- h-5 text-gray-800 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                        </path>
-                    </svg>
-                ',
-                        ],
-
-                        [
-                            'label' => 'Motivasi',
-                            'icon' => '
-                    <svg class="w- h-5 fill-gray-600" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" viewBox="0 0 240 240">
+                        <svg class="w-7 h-7 fill-teal-600" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" viewBox="0 0 240 240">
   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="
     M 220,20
     L 10,105
@@ -252,9 +276,20 @@
     L 175,195
     L 220,20
     Z"/>
-</svg>
-                ',
-                        ],
+
+                        </svg>
+          
+
+                    </div>
+
+                    <span class="text-xs text-primary-teal font-medium">
+                        Motivasi
+                    </span>
+                </div>
+
+                @php
+                    $steps = [
+                        
 
                         [
                             'label' => 'Verifikasi',
@@ -301,20 +336,27 @@
             <div class="bg-primary-teal  p-6 border-b  border-gray-50 rounded-xl">
                 <div class="flex items-center space-x-3 mb-2">
                     <div class="text-gray-50">
-                        <svg class="w-9 h-9 text-gray-800 dark:text-gray-200" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 16v-4m0-4h.01">
-                            </path>
+                        <svg class="w- h-9 fill-gray-200" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" viewBox="0 0 240 240">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="
+    M 220,20
+    L 10,105
+    L 75,125
+    L 155,60
+    L 95,135
+    L 95,200
+    L 130,165
+    L 175,195
+    L 220,20
+    Z"/>
+
                         </svg>
                     </div>
-                    <h1 class="text-3xl font-bold text-gray-50">Info Lainya</h1>
+                    <h1 class="text-3xl font-bold text-gray-50">Motivasi</h1>
                 </div>
-                <p class="text-gray-200 text-xl ml-3">Hobi & Minat</p>
+                <p class="text-gray-200 text-xl ml-3">Alasan Daftar</p>
             </div>
 
-            <form action="{{ route('pendaftaransiswa.storeStep6') }}" method="POST"
+            <form action="{{ route('pendaftaransiswa.storeStep8') }}" method="POST" enctype="multipart/form-data"
                 class="bg-white shadow-lg rounded-xl overflow-hidden">
                 @csrf
 
@@ -325,103 +367,78 @@
                     <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
 
                         {{-- isi form --}}
-                        <!-- Hobi / Bakat -->
-                        <div class="mb-6">
-
-                            <label class="block mb-2 mt-5 text-[15px] font-semibold text-gray-900">
-                                Hobi/Bakat Khusus
-                                <span class="font-normal text-gray-500">(opsional)</span>
+                        {{-- Field: Alasan Mendaftar --}}
+                        <div class="mb-5">
+                            <label for="alasan" class="block text-sm font-semibold text-gray-800 mb-3">
+                                Alasan Mendaftar di Roudlotul Musthofa
+                                <span class="text-red-500 ml-0.5">*</span>
                             </label>
 
-                            <input type="text" name="hobby_talent"
-                                placeholder="Contoh: Olahraga, Seni, Musik, dll"
-                                class="w-full h-12 px-4
-            rounded-[12px]
-            border border-gray-300
-            bg-white
-            text-[15px]
-            text-gray-900
-            placeholder:text-gray-500
-            focus:outline-none
-            focus:ring-2
-            focus:ring-teal-600
-            focus:border-teal-600">
+                            <textarea id="alasan" name="alasan" rows="5" minlength="50"
+                                placeholder="Tuliskan motivasi dan alasan Anda ingin belajar di Roudlotul Musthofa (minimal 50 karakter)"
+                                oninput="updateCharCount(this)"
+                                class="w-full px-4 py-3 text-sm text-gray-800 bg-white border border-gray-300 rounded-lg resize-y
+                       placeholder-gray-400 leading-relaxed
+                       focus:outline-none focus:ring-2 focus:ring-emerald-500/10
+                       transition duration-150 ease-in-out
+                       @error('alasan') focus:border-red-400 @enderror">{{ old('alasan') }}</textarea>
 
+                            {{-- Char Counter --}}
+                            <div class="flex justify-end mt-1.5">
+                                <span id="char-count"
+                                    class="text-xs text-gray-400 transition-colors duration-200">0/50
+                                    karakter</span>
+                            </div>
+
+                            {{-- Validation Error --}}
+                            @error('alasan')
+                                <p class="mt-1.5 text-xs text-red-500 flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    {{ $message }}
+                                </p>
+                            @enderror
                         </div>
 
-                        <!-- Minat Ekstrakurikuler -->
-                        <div class="mb-6">
-
-                            <label class="block mb-2 text-[15px] font-semibold text-gray-900">
-                                Minat Ekstrakurikuler
-                                <span class="font-normal text-gray-500">(opsional)</span>
-                            </label>
-
-                            <input type="text" name="extracurricular_interest"
-                                placeholder="Ekstrakurikuler yang diminati"
-                                class="w-full h-12 px-4
-            rounded-[12px]
-            border border-gray-300
-            bg-white
-            text-[15px]
-            text-gray-900
-            placeholder:text-gray-500
-            focus:outline-none
-            focus:ring-2
-            focus:ring-teal-600
-            focus:border-teal-600">
-
-                        </div>
-
-                        <!-- Harapan Setelah Lulus -->
-                        <div class="mb-6">
-
-                            <label class="block mb-2 text-[15px] font-semibold text-gray-900">
-                                Harapan Setelah Lulus
-                                <span class="font-normal text-gray-500">(opsional)</span>
-                            </label>
-
-                            <textarea name="future_goal" rows="3" placeholder="Cita-cita atau harapan setelah lulus dari pesantren"
-                                class="w-full
-            min-h-19.5
-            px-4
-            py-3
-            rounded-[12px]
-            border border-gray-300
-            bg-white
-            text-[15px]
-            text-gray-900
-            placeholder:text-gray-500
-            resize-none
-            focus:outline-none
-            focus:ring-2
-            focus:ring-teal-600
-            focus:border-teal-600"></textarea>
-
-                        </div>
-
-                        <!-- Note Box -->
-                        <div
-                            class="rounded-[14px]
-        border border-amber-300
-        bg-amber-50
-        px-6
-        py-5">
-
-                            <p class="text-[15px] leading-6 text-amber-700">
-                                <span class="font-semibold">Note:</span>
-                                Informasi ini opsional namun akan membantu kami memahami
-                                minat dan potensi santri.
+                        {{-- Tips Box --}}
+                        <div class="bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3.5">
+                            <p class="text-sm text-emerald-700 leading-relaxed">
+                                <span class="font-bold text-emerald-800">Tips:</span>
+                                Ceritakan dengan jujur mengapa Anda tertarik belajar di pesantren kami dan apa
+                                yang ingin Anda capai.
                             </p>
-
                         </div>
+
+
+
+                        @push('scripts')
+                            <script>
+                                function updateCharCount(el) {
+                                    const len = el.value.length;
+                                    const counter = document.getElementById('char-count');
+                                    counter.textContent = len + '/50 karakter';
+
+                                    if (len >= 50) {
+                                        counter.classList.remove('text-gray-400');
+                                        counter.classList.add('text-emerald-600', 'font-medium');
+                                    } else {
+                                        counter.classList.remove('text-emerald-600', 'font-medium');
+                                        counter.classList.add('text-gray-400');
+                                    }
+                                }
+                            </script>
+                        @endpush
+
 
                         <!-- FOOTER BUTTON -->
                         <div class="mt-8 pt-6 border-t border-gray-200
         flex items-center justify-between">
 
                             <!-- Button Sebelumnya -->
-                            <a href="{{ route('pendaftaransiswa.step5') }}"
+                            <a href="{{ route('pendaftaransiswa.step7') }}"
                                 class="flex items-center gap-2 px-6 py-3
     rounded-xl border border-gray-300
     text-gray-500 bg-gray-100
@@ -460,11 +477,11 @@
                         </div>
 
             </form>
-
-
-
         </div>
+
     </main>
+
+   
 
 </body>
 

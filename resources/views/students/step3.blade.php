@@ -165,7 +165,6 @@
                     <svg class="w- h-5 text-gray-800 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023"/>
 </svg>
-
                 ',
                         ],
 
@@ -195,11 +194,19 @@
                         [
                             'label' => 'Motivasi',
                             'icon' => '
-                    <svg class="w- h-5 text-gray-800 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M5 12l14-7-7 14-2-5-5-2z">
-                        </path>
-                    </svg>
+                    <svg class="w- h-5 fill-gray-600" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" viewBox="0 0 240 240">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="
+    M 220,20
+    L 10,105
+    L 75,125
+    L 155,60
+    L 95,135
+    L 95,200
+    L 130,165
+    L 175,195
+    L 220,20
+    Z"/>
+</svg>
                 ',
                         ],
 
