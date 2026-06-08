@@ -230,6 +230,16 @@
                 <p class="text-gray-200 text-xl ml-3">Info Siswa</p>
             </div>
 
+            @if ($errors->any())
+                <div class="bg-teal-200 p-4 rounded mb-4">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li class="text-red-600">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('pendaftaransiswa.storeStep1') }}" method="POST"
                 class="bg-white shadow-lg rounded-xl overflow-hidden">
                 @csrf
@@ -322,11 +332,10 @@
                         <!-- Anak Ke -->
                         <div class="space-y-2">
                             <label class="font-semibold text-gray-900 block">
-                                Anak ke- <span
-                                    class="text-red-500">*</span>
+                                Anak ke- <span class="text-red-500">*</span>
                             </label>
 
-                            <input type="number" placeholder="Contoh: 1" required
+                            <input type="number" name="anak_ke" placeholder="Contoh: 1" required
                                 class="w-full rounded-xl border border-gray-300
                 px-4 py-3 focus:outline-none
                 focus:ring-2 focus:ring-teal-500">
@@ -335,11 +344,10 @@
                         <!-- Jumlah Saudara -->
                         <div class="space-y-2">
                             <label class="font-semibold text-gray-900 block">
-                                Jumlah Saudara <span
-                                    class="text-red-500">*</span>
+                                Jumlah Saudara <span class="text-red-500">*</span>
                             </label>
 
-                            <input type="number" placeholder="Termasuk diri sendiri" required
+                            <input type="number" name="jumlah_saudara" placeholder="Termasuk diri sendiri" required
                                 class="w-full rounded-xl border border-gray-300
                 px-4 py-3 focus:outline-none
                 focus:ring-2 focus:ring-teal-500">
@@ -351,11 +359,11 @@
                     <div class="space-y-2">
 
                         <label class="font-semibold text-gray-900 block">
-                            Alamat Lengkap <span
-                                    class="text-red-500">*</span>
+                            Alamat Lengkap <span class="text-red-500">*</span>
                         </label>
 
-                        <textarea rows="3" placeholder="Alamat lengkap dengan RT/RW, Kelurahan , Kecamatan , Kota" required
+                        <textarea rows="3" name="alamat" placeholder="Alamat lengkap dengan RT/RW, Kelurahan , Kecamatan , Kota"
+                            required
                             class="w-full rounded-xl border border-gray-300
             px-4 py-3 focus:outline-none
             focus:ring-2 focus:ring-teal-500"></textarea>
@@ -369,7 +377,7 @@
                             No. Telepon/WhatsApp *
                         </label>
 
-                        <input type="text" placeholder="08xxxxxxxxxx"
+                        <input type="text" name="no_telepon" placeholder="08xxxxxxxxxx"
                             class="w-full rounded-xl border border-gray-300
             px-4 py-3 focus:outline-none
             focus:ring-2 focus:ring-teal-500">

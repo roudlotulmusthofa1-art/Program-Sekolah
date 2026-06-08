@@ -357,167 +357,182 @@
             <form action="{{ route('pendaftaransiswa.storeStep9') }}" method="POST" enctype="multipart/form-data"
                 class="bg-white shadow-lg rounded-xl overflow-hidden">
                 @csrf
+                <form action="{{ route('pendaftaransiswa.storeStep9') }}" method="POST">
+                    @csrf
 
-                {{-- Isi Formulir --}}
-                <div class="max-w-4xl mx-auto">
+                    {{-- Tambahkan ini --}}
+                    <input type="hidden" name="agree_rules" id="input_agree_rules" value="0">
+                    <input type="hidden" name="agree_payment" id="input_agree_payment" value="0">
+                    <input type="hidden" name="agree_data_truth" id="input_agree_data_truth" value="0">
+                    {{-- Isi Formulir --}}
+                    <div class="max-w-4xl mx-auto">
 
-                    <!-- Card -->
-                    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
+                        <!-- Card -->
+                        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
 
-                        {{-- isi form --}}
-                        {{-- Field: Alasan Mendaftar --}}
-                        <div class="bg-teal-50/60 rounded-xl px-6 py-5">
-                            <h3 class="text-base font-bold text-gray-800 mb-4">Review Data Pendaftaran</h3>
-                            <div class="grid grid-cols-2 gap-x-4 gap-y-2.5">
-                                <span class="text-sm text-gray-500">Nama Lengkap</span>
-                                <span class="text-sm font-bold text-gray-800">{{ $nama ?? 'asdasd' }}</span>
+                            {{-- isi form --}}
+                            {{-- Field: Alasan Mendaftar --}}
+                            <div class="bg-teal-50/60 rounded-xl px-6 py-5">
+                                <h3 class="text-base font-bold text-gray-800 mb-4">Review Data Pendaftaran</h3>
+                                <div class="grid grid-cols-2 gap-x-4 gap-y-2.5">
+                                    <span class="text-sm text-gray-500">Nama Lengkap</span>
+                                    <span class="text-sm font-bold text-gray-800">{{ $nama ?? 'asdasd' }}</span>
 
-                                <span class="text-sm text-gray-500">NIK</span>
-                                <span class="text-sm font-bold text-gray-800">{{ $nik ?? '111111111111111' }}</span>
+                                    <span class="text-sm text-gray-500">NIK</span>
+                                    <span
+                                        class="text-sm font-bold text-gray-800">{{ $nik ?? '111111111111111' }}</span>
 
-                                <span class="text-sm text-gray-500">Sekolah</span>
-                                <span
-                                    class="text-sm font-bold text-gray-800">{{ $sekolah ?? '1111111111111111111' }}</span>
+                                    <span class="text-sm text-gray-500">Sekolah</span>
+                                    <span
+                                        class="text-sm font-bold text-gray-800">{{ $sekolah ?? '1111111111111111111' }}</span>
 
-                                <span class="text-sm text-gray-500">Dokumen</span>
-                                <span class="text-sm font-bold text-gray-800">{{ $dokumen ?? '4 / 4 file' }}</span>
+                                    <span class="text-sm text-gray-500">Dokumen</span>
+                                    <span class="text-sm font-bold text-gray-800">{{ $dokumen ?? '4 / 4 file' }}</span>
+                                </div>
                             </div>
-                        </div>
 
-                        {{-- Pernyataan --}}
-                        <div>
-                            <h3 class="text-base font-bold text-gray-800 mt-3 mb-4">Pernyataan</h3>
-                            <div class="flex flex-col gap-3" id="statement-list">
+                            {{-- Pernyataan --}}
+                            <div>
+                                <h3 class="text-base font-bold text-gray-800 mt-3 mb-4">Pernyataan</h3>
+                                <div class="flex flex-col gap-3" id="statement-list">
 
-                                {{-- Pernyataan 1 --}}
-                                <label
-                                    class="statement-item flex items-start gap-4 border border-gray-200 rounded-xl px-5 py-4 cursor-pointer transition-all duration-200 hover:border-teal-500 hover:bg-teal-50/40"
-                                    data-index="0">
+                                    {{-- Pernyataan 1 --}}
+                                    <label
+                                        class="statement-item flex items-start gap-4 border border-gray-200 rounded-xl px-5 py-4 cursor-pointer transition-all duration-200 hover:border-teal-500 hover:bg-teal-50/40"
+                                        data-index="0">
 
-                                    <span
-                                        class="radio-dot mt-0.5 w-5 h-5 rounded-full border-2 border-gray-300 flex-shrink-0 flex items-center justify-center transition-all duration-200">
                                         <span
-                                            class="dot-inner w-2.5 h-2.5 rounded-full bg-teal-700 scale-0 transition-transform duration-200"></span>
-                                    </span>
-                                    <span class="text-sm text-gray-600 leading-relaxed">
-                                        Saya sanggup mematuhi <strong class="font-bold text-gray-800">seluruh tata
-                                            tertib</strong>
-                                        yang berlaku di Ribath Masjid Riyadh Solo
-                                    </span>
-                                </label>
+                                            class="radio-dot mt-0.5 w-5 h-5 rounded-full border-2 border-gray-300 shrink-0 flex items-center justify-center transition-all duration-200">
+                                            <span
+                                                class="dot-inner w-2.5 h-2.5 rounded-full bg-teal-700 scale-0 transition-transform duration-200"></span>
+                                        </span>
+                                        <span class="text-sm text-gray-600 leading-relaxed">
+                                            Saya sanggup mematuhi <strong class="font-bold text-gray-800">seluruh tata
+                                                tertib</strong>
+                                            yang berlaku di Rroudlotul musthofa
+                                        </span>
+                                    </label>
 
-                                {{-- Pernyataan 2 --}}
-                                <label
-                                    class="statement-item flex items-start gap-4 border border-gray-200 rounded-xl px-5 py-4 cursor-pointer transition-all duration-200 hover:border-teal-500 hover:bg-teal-50/40"
-                                    data-index="1">
+                                    {{-- Pernyataan 2 --}}
+                                    <label
+                                        class="statement-item flex items-start gap-4 border border-gray-200 rounded-xl px-5 py-4 cursor-pointer transition-all duration-200 hover:border-teal-500 hover:bg-teal-50/40"
+                                        data-index="1">
 
-                                    <span
-                                        class="radio-dot mt-0.5 w-5 h-5 rounded-full border-2 border-gray-300 flex-shrink-0 flex items-center justify-center transition-all duration-200">
                                         <span
-                                            class="dot-inner w-2.5 h-2.5 rounded-full bg-teal-700 scale-0 transition-transform duration-200"></span>
-                                    </span>
-                                    <span class="text-sm text-gray-600 leading-relaxed">
-                                        Orang tua/wali sanggup membayar <strong class="font-bold text-gray-800">biaya
-                                            pendidikan</strong>
-                                        sesuai ketentuan yang berlaku
-                                    </span>
-                                </label>
+                                            class="radio-dot mt-0.5 w-5 h-5 rounded-full border-2 border-gray-300 shrink-0 flex items-center justify-center transition-all duration-200">
+                                            <span
+                                                class="dot-inner w-2.5 h-2.5 rounded-full bg-teal-700 scale-0 transition-transform duration-200"></span>
+                                        </span>
+                                        <span class="text-sm text-gray-600 leading-relaxed">
+                                            Orang tua/wali sanggup membayar <strong
+                                                class="font-bold text-gray-800">biaya
+                                                pendidikan</strong>
+                                            sesuai ketentuan yang berlaku
+                                        </span>
+                                    </label>
 
-                                {{-- Pernyataan 3 --}}
-                                <label
-                                    class="statement-item flex items-start gap-4 border border-gray-200 rounded-xl px-5 py-4 cursor-pointer transition-all duration-200 hover:border-teal-500 hover:bg-teal-50/40"
-                                    data-index="2">
+                                    {{-- Pernyataan 3 --}}
+                                    <label
+                                        class="statement-item flex items-start gap-4 border border-gray-200 rounded-xl px-5 py-4 cursor-pointer transition-all duration-200 hover:border-teal-500 hover:bg-teal-50/40"
+                                        data-index="2">
 
-                                    <span
-                                        class="radio-dot mt-0.5 w-5 h-5 rounded-full border-2 border-gray-300 flex-shrink-0 flex items-center justify-center transition-all duration-200">
                                         <span
-                                            class="dot-inner w-2.5 h-2.5 rounded-full bg-teal-700 scale-0 transition-transform duration-200"></span>
-                                    </span>
-                                    <span class="text-sm text-gray-600 leading-relaxed">
-                                        Saya menyatakan bahwa <strong class="font-bold text-gray-800">semua data yang
-                                            saya isi adalah benar</strong>
-                                        dan dapat dipertanggungjawabkan
-                                    </span>
-                                </label>
+                                            class="radio-dot mt-0.5 w-5 h-5 rounded-full border-2 border-gray-300 shrink-0 flex items-center justify-center transition-all duration-200">
+                                            <span
+                                                class="dot-inner w-2.5 h-2.5 rounded-full bg-teal-700 scale-0 transition-transform duration-200"></span>
+                                        </span>
+                                        <span class="text-sm text-gray-600 leading-relaxed">
+                                            Saya menyatakan bahwa <strong class="font-bold text-gray-800">semua data
+                                                yang
+                                                saya isi adalah benar</strong>
+                                            dan dapat dipertanggungjawabkan
+                                        </span>
+                                    </label>
 
+                                </div>
                             </div>
-                        </div>
-                        <!-- FOOTER BUTTON -->
-                        <div class="mt-8 pt-6 border-t border-gray-200
+                            <!-- FOOTER BUTTON -->
+                            <div class="mt-8 pt-6 border-t border-gray-200
         flex items-center justify-between">
 
-                            <!-- Button Sebelumnya -->
-                            <a href="{{ route('pendaftaransiswa.step8') }}"
-                                class="flex items-center gap-2 px-6 py-3
+                                <!-- Button Sebelumnya -->
+                                <a href="{{ route('pendaftaransiswa.step8') }}"
+                                    class="flex items-center gap-2 px-6 py-3
     rounded-xl border border-gray-300
     text-gray-500 bg-gray-100
     hover:bg-gray-200 transition">
 
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
 
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 19l-7-7 7-7" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 19l-7-7 7-7" />
 
-                                </svg>
-                                Sebelumnya
-                            </a>
+                                    </svg>
+                                    Sebelumnya
+                                </a>
 
 
-                            <!-- Button Selanjutnya -->
-                            <button type="submit" id="btn-submit" disabled
-                                class="flex items-center gap-2 px-8 py-3
+                                <!-- Button Selanjutnya -->
+                                <button type="submit" id="btn-submit" disabled
+                                    class="flex items-center gap-2 px-8 py-3
     rounded-xl bg-teal-700 text-white
     hover:bg-teal-800 transition
     disabled:opacity-50 disabled:cursor-not-allowed">
-                                Kirim Pendaftaran
-                                ...
-                            </button>
+                                    Kirim Pendaftaran
+                                    ...
+                                </button>
 
-                        </div>
+                            </div>
 
-            </form>
+                </form>
         </div>
 
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const items = document.querySelectorAll('.statement-item');
-            const submitBtn = document.getElementById('btn-submit');
-            const checkedMap = {};
+        document.addEventListener('DOMContentLoaded', function () {
+    const items     = document.querySelectorAll('.statement-item');
+    const submitBtn = document.getElementById('btn-submit');
+    const checkedMap = { 0: false, 1: false, 2: false };
 
-            items.forEach(function(label, i) {
-                checkedMap[i] = false;
+    const inputMap = {
+        0: document.getElementById('input_agree_rules'),
+        1: document.getElementById('input_agree_payment'),
+        2: document.getElementById('input_agree_data_truth'),
+    };
 
-                label.addEventListener('click', function(e) {
-                    e.preventDefault(); // cegah double-trigger dari label
-                    checkedMap[i] = !checkedMap[i];
+    items.forEach(function (label, i) {
+        label.addEventListener('click', function (e) {
+            e.preventDefault();
+            checkedMap[i] = !checkedMap[i];
 
-                    const radioDot = label.querySelector('.radio-dot');
-                    const dotInner = label.querySelector('.dot-inner');
+            // Update value hidden input — inilah yang dikirim ke server
+            inputMap[i].value = checkedMap[i] ? '1' : '0';
 
-                    if (checkedMap[i]) {
-                        label.classList.add('border-teal-600', 'bg-teal-50');
-                        label.classList.remove('border-gray-200');
-                        radioDot.classList.add('border-teal-600');
-                        radioDot.classList.remove('border-gray-300');
-                        dotInner.classList.remove('scale-0');
-                        dotInner.classList.add('scale-100');
-                    } else {
-                        label.classList.remove('border-teal-600', 'bg-teal-50');
-                        label.classList.add('border-gray-200');
-                        radioDot.classList.remove('border-teal-600');
-                        radioDot.classList.add('border-gray-300');
-                        dotInner.classList.add('scale-0');
-                        dotInner.classList.remove('scale-100');
-                    }
+            const radioDot = label.querySelector('.radio-dot');
+            const dotInner = label.querySelector('.dot-inner');
 
-                    const allChecked = Object.values(checkedMap).every(Boolean);
-                    submitBtn.disabled = !allChecked;
-                });
-            });
+            if (checkedMap[i]) {
+                label.classList.add('border-teal-600', 'bg-teal-50');
+                label.classList.remove('border-gray-200');
+                radioDot.classList.add('border-teal-600');
+                radioDot.classList.remove('border-gray-300');
+                dotInner.classList.remove('scale-0');
+                dotInner.classList.add('scale-100');
+            } else {
+                label.classList.remove('border-teal-600', 'bg-teal-50');
+                label.classList.add('border-gray-200');
+                radioDot.classList.remove('border-teal-600');
+                radioDot.classList.add('border-gray-300');
+                dotInner.classList.add('scale-0');
+                dotInner.classList.remove('scale-100');
+            }
+
+            submitBtn.disabled = !Object.values(checkedMap).every(Boolean);
         });
+    });
+});
     </script>
 
 </body>

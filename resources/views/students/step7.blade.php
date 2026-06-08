@@ -328,6 +328,16 @@
                 <p class="text-gray-200 text-xl ml-3">Upload File</p>
             </div>
 
+            @if ($errors->any())
+                <div class="bg-teal-200 p-4 rounded mb-4">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li class="text-red-600">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('pendaftaransiswa.storeStep7') }}" method="POST" enctype="multipart/form-data"
                 class="bg-white shadow-lg rounded-xl overflow-hidden">
                 @csrf

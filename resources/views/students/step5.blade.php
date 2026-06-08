@@ -289,7 +289,8 @@
                         <svg class="w-9 h-9 text-gray-800 dark:text-gray-200" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                             viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2"
                                 d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023" />
                         </svg>
                     </div>
@@ -297,6 +298,16 @@
                 </div>
                 <p class="text-gray-200 text-xl ml-3">kemampuan</p>
             </div>
+
+            @if ($errors->any())
+                <div class="bg-teal-200 p-4 rounded mb-4">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li class="text-red-600">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <form action="{{ route('pendaftaransiswa.storeStep5') }}" method="POST"
                 class="bg-white shadow-lg rounded-xl overflow-hidden">
@@ -309,18 +320,18 @@
                     <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
 
                         {{-- format form --}}
-                            <!-- Kemampuan Membaca Al-Quran -->
-                          <div class="space-y-2 mt-5">
+                        <!-- Kemampuan Membaca Al-Quran -->
+                        <div class="space-y-2 mt-5">
 
-                                <label class="block text-[15px] font-semibold text-gray-900">
-                                    Kemampuan Membaca Al-Quran
-                                    <span class="text-red-500">*</span>
-                                </label>
+                            <label class="block text-[15px] font-semibold text-gray-900">
+                                Kemampuan Membaca Al-Quran
+                                <span class="text-red-500">*</span>
+                            </label>
 
-                                <div class="relative">
+                            <div class="relative">
 
-                                    <select name="quran_reading_ability"
-                                        class="appearance-none w-full h-11 px-4 pr-10
+                                <select name="quran_reading_ability"
+                                    class="appearance-none w-full h-11 px-4 pr-10
                 rounded-[12px]
                 border border-gray-300
                 bg-white
@@ -331,54 +342,54 @@
                 focus:ring-teal-600
                 focus:border-teal-600">
 
-                                        <option value="">
-                                            Pilih kemampuan
-                                        </option>
+                                    <option value="">
+                                        Pilih kemampuan
+                                    </option>
 
-                                        <option value="belum_bisa">
-                                            Belum Bisa
-                                        </option>
+                                    <option value="belum_bisa">
+                                        Belum Bisa
+                                    </option>
 
-                                        <option value="iqro">
-                                            Iqro'
-                                        </option>
+                                    <option value="iqro">
+                                        Iqro'
+                                    </option>
 
-                                        <option value="terbata">
-                                            Bisa Membaca Terbata-bata
-                                        </option>
+                                    <option value="terbata">
+                                        Bisa Membaca Terbata-bata
+                                    </option>
 
-                                        <option value="lancar">
-                                            Lancar
-                                        </option>
+                                    <option value="lancar">
+                                        Lancar
+                                    </option>
 
-                                        <option value="tartil">
-                                            Tartil
-                                        </option>
+                                    <option value="tartil">
+                                        Tartil
+                                    </option>
 
-                                    </select>
+                                </select>
 
-                                    <svg class="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
 
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 9l-7 7-7-7" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
 
-                                    </svg>
-
-                                </div>
+                                </svg>
 
                             </div>
 
-                            <!-- Jumlah Juz -->
-                           <div class="space-y-2 ">
+                        </div>
 
-                                <label class="block mt-5 text-[15px] font-semibold text-gray-900">
-                                    Jumlah Juz yang Dihafal
-                                    <span class="text-gray-500 font-normal">(opsional)</span>
-                                </label>
+                        <!-- Jumlah Juz -->
+                        <div class="space-y-2 ">
 
-                                <input type="number" name="memorized_juz" placeholder="Contoh: 1"
-                                    class="w-full h-11 px-4
+                            <label class="block mt-5 text-[15px] font-semibold text-gray-900">
+                                Jumlah Juz yang Dihafal
+                                <span class="text-gray-500 font-normal">(opsional)</span>
+                            </label>
+
+                            <input type="number" name="memorized_juz" placeholder="Contoh: 1"
+                                class="w-full h-11 px-4
             rounded-[12px]
             border border-gray-300
             text-[15px]
@@ -389,50 +400,50 @@
             focus:ring-teal-600
             focus:border-teal-600">
 
-                            </div>
+                        </div>
 
-                            <!-- Pernah Pesantren -->
-                          <div class="space-y-2">
+                        <!-- Pernah Pesantren -->
+                        <div class="space-y-2">
 
-                                <label class="block mt-5 text-[15px] font-semibold text-gray-900">
-                                    Apakah pernah belajar di pesantren sebelumnya?
-                                    <span class="text-red-500">*</span>
+                            <label class="block mt-5 text-[15px] font-semibold text-gray-900">
+                                Apakah pernah belajar di pesantren sebelumnya?
+                                <span class="text-red-500">*</span>
+                            </label>
+
+                            <div class="flex items-center gap-6">
+
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="radio" name="previous_pesantren" value="ya"
+                                        class="w-4 h-4 text-teal-600 border-gray-300 focus:ring-teal-600">
+
+                                    <span class="ml-2 text-[15px] text-gray-900">
+                                        Ya
+                                    </span>
                                 </label>
 
-                                <div class="flex items-center gap-6">
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="radio" name="previous_pesantren" value="tidak"
+                                        class="w-4 h-4 text-teal-600 border-gray-300 focus:ring-teal-600">
 
-                                    <label class="inline-flex items-center cursor-pointer">
-                                        <input type="radio" name="previous_pesantren" value="ya"
-                                            class="w-4 h-4 text-teal-600 border-gray-300 focus:ring-teal-600">
-
-                                        <span class="ml-2 text-[15px] text-gray-900">
-                                            Ya
-                                        </span>
-                                    </label>
-
-                                    <label class="inline-flex items-center cursor-pointer">
-                                        <input type="radio" name="previous_pesantren" value="tidak"
-                                            class="w-4 h-4 text-teal-600 border-gray-300 focus:ring-teal-600">
-
-                                        <span class="ml-2 text-[15px] text-gray-900">
-                                            Tidak
-                                        </span>
-                                    </label>
-
-                                </div>
+                                    <span class="ml-2 text-[15px] text-gray-900">
+                                        Tidak
+                                    </span>
+                                </label>
 
                             </div>
 
-                            <!-- Kemampuan Keagamaan -->
-                            <div class="space-y-2">
+                        </div>
 
-                                <label class="block mt-5 text-[15px] font-semibold text-gray-900">
-                                    Kemampuan Keagamaan Lainnya
-                                    <span class="text-gray-500 font-normal">(opsional)</span>
-                                </label>
+                        <!-- Kemampuan Keagamaan -->
+                        <div class="space-y-2">
 
-                                <textarea name="religious_skill" rows="3" placeholder="Contoh: Tahfidz, Kitab Kuning, Khatib, dll"
-                                    class="w-full
+                            <label class="block mt-5 text-[15px] font-semibold text-gray-900">
+                                Kemampuan Keagamaan Lainnya
+                                <span class="text-gray-500 font-normal">(opsional)</span>
+                            </label>
+
+                            <textarea name="religious_skill" rows="3" placeholder="Contoh: Tahfidz, Kitab Kuning, Khatib, dll"
+                                class="w-full
             min-h-20
             px-4
             py-3
@@ -447,9 +458,9 @@
             focus:ring-teal-600
             focus:border-teal-600"></textarea>
 
-                            </div>
+                        </div>
 
-                      
+
 
                         <!-- FOOTER BUTTON -->
                         <div class="mt-8 pt-6 border-t border-gray-200

@@ -33,15 +33,27 @@ class GuardianController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'student_name' => 'required',
-            'birth_place' => 'required',
-            'birth_date' => 'required',
-            'gender' => 'required',
-            'program' => 'required',
             'guardian_name' => 'required',
             'whatsapp' => 'required',
             'password' => 'required|min:8|confirmed',
+            'registration_code' => 'required|string',
         ]);
+
+         // Cari siswa berdasarkan kode registrasi
+    $student = Student::where(
+        'registration_code',
+        $request->registration_code
+    )->first();
+
+    // Jika kode tidak ditemukan
+    if (!$student) {
+        return back()->withErrors([
+            'registration_code' => 'Kode registrasi tidak ditemukan.'
+        ])->withInput();
+    }
+
+    // lanjut proses simpan guardian
+
 
     Guardian::create([
 

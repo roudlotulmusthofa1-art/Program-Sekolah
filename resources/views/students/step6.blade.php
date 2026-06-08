@@ -314,6 +314,16 @@
                 <p class="text-gray-200 text-xl ml-3">Hobi & Minat</p>
             </div>
 
+            @if ($errors->any())
+                <div class="bg-teal-200 p-4 rounded mb-4">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li class="text-red-600">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('pendaftaransiswa.storeStep6') }}" method="POST"
                 class="bg-white shadow-lg rounded-xl overflow-hidden">
                 @csrf
@@ -328,7 +338,7 @@
                         <!-- Hobi / Bakat -->
                         <div class="mb-6">
 
-                            <label class="block mb-2 mt-5 text-[15px] font-semibold text-gray-900">
+                            <label class="block mb-2 text-[15px] font-semibold text-gray-900">
                                 Hobi/Bakat Khusus
                                 <span class="font-normal text-gray-500">(opsional)</span>
                             </label>
@@ -381,7 +391,7 @@
                                 <span class="font-normal text-gray-500">(opsional)</span>
                             </label>
 
-                            <textarea name="future_goal" rows="3" placeholder="Cita-cita atau harapan setelah lulus dari pesantren"
+                            <textarea name="future_goal" rows="3" placeholder="Cita-cita atau harapan setelah lulus dari sini"
                                 class="w-full
             min-h-19.5
             px-4

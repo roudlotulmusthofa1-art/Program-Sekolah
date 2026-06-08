@@ -267,6 +267,16 @@
                 <p class="text-gray-200 text-xl ml-3">Riwayat sekolah</p>
             </div>
 
+            @if ($errors->any())
+                <div class="bg-teal-200 p-4 rounded mb-4">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li class="text-red-600">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            
             <form action="{{ route('pendaftaransiswa.storeStep3') }}" method="POST"
                 class="bg-white shadow-lg rounded-xl overflow-hidden">
                 @csrf
@@ -279,7 +289,7 @@
 
                         <!-- Nama Sekolah -->
                         <div class="space-y-2">
-                            <label class="block mb-2 text-[15px] font-medium text-gray-900">
+                            <label class="block text-[15px] font-medium text-gray-900">
                                 Nama Sekolah Terakhir
                                 <span class="text-red-500">*</span>
                             </label>
@@ -294,7 +304,7 @@
 
                         <!-- Jenjang -->
                         <div class="space-y-2">
-                            <label class="block mb-2 text-[15px] font-medium text-gray-900">
+                            <label class="block  mt-5 text-[15px] font-medium text-gray-900">
                                 Jenjang Pendidikan Terakhir
                                 <span class="text-red-500">*</span>
                             </label>
@@ -331,7 +341,7 @@
 
                         <!-- Tahun Lulus -->
                         <div class="space-y-2">
-                            <label class="block mb-2 text-[15px] font-medium text-gray-900">
+                            <label class="block mt-5 text-[15px] font-medium text-gray-900">
                                 Tahun Lulus
                                 <span class="text-red-500">*</span>
                             </label>
@@ -345,7 +355,7 @@
 
                         <!-- Prestasi -->
                         <div class="space-y-2">
-                            <label class="block mb-2 text-[15px] font-medium text-gray-900">
+                            <label class="block  mt-5 text-[15px] font-medium text-gray-900">
                                 Prestasi (opsional)
                             </label>
 
@@ -361,33 +371,32 @@
                 focus:ring-teal-600 focus:border-transparent"></textarea>
                         </div>
 
-                        
-                                
-                                <!-- FOOTER BUTTON -->
-                                <div
-                                    class="mt-8 pt-6 border-t border-gray-200
+
+
+                        <!-- FOOTER BUTTON -->
+                        <div class="mt-8 pt-6 border-t border-gray-200
         flex items-center justify-between">
 
-                                    <!-- Button Sebelumnya -->
-                                    <a href="{{ route('pendaftaransiswa.step2') }}"
-                                        class="flex items-center gap-2 px-6 py-3
+                            <!-- Button Sebelumnya -->
+                            <a href="{{ route('pendaftaransiswa.step2') }}"
+                                class="flex items-center gap-2 px-6 py-3
     rounded-xl border border-gray-300
     text-gray-500 bg-gray-100
     hover:bg-gray-200 transition">
 
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
 
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 19l-7-7 7-7" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 19l-7-7 7-7" />
 
-                                        </svg>
-                                        Sebelumnya
-                                    </a>
+                                </svg>
+                                Sebelumnya
+                            </a>
 
-                                    <!-- Selanjutnya -->
-                                    <button type="submit"
-                                        class="inline-flex items-center gap-2
+                            <!-- Selanjutnya -->
+                            <button type="submit"
+                                class="inline-flex items-center gap-2
                     h-11 px-6
                     rounded-xl
                     bg-teal-700
@@ -396,25 +405,24 @@
                     hover:bg-teal-800
                     transition">
 
-                                        Selanjutnya
+                                Selanjutnya
 
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M9 5l7 7-7 7" />
-                                        </svg>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7" />
+                                </svg>
 
-                                    </button>
-
-                                </div>
-
-                            </div>
+                            </button>
 
                         </div>
 
                     </div>
-            </form>
+
+                </div>
+
+        </div>
+        </form>
 
 
 

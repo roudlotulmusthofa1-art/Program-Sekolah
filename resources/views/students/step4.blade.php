@@ -282,6 +282,16 @@
                 <p class="text-gray-200 text-xl ml-3">Info Medis</p>
             </div>
 
+            @if ($errors->any())
+                <div class="bg-teal-200 p-4 rounded mb-4">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li class="text-red-600">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('pendaftaransiswa.storeStep4') }}" method="POST"
                 class="bg-white shadow-lg rounded-xl overflow-hidden">
                 @csrf
@@ -335,7 +345,7 @@
 
                         <!-- Riwayat Penyakit -->
                         <div class="space-y-2">
-                            <label class="block mb-1 mt-4 text-[15px] font-medium text-gray-900">
+                            <label class="block  mt-5 text-[15px] font-medium text-gray-900">
                                 Riwayat Penyakit (opsional)
                             </label>
 

@@ -227,7 +227,7 @@
                     </span>
                 </div>
 
- <!-- STEP 7: SELESAI -->
+                <!-- STEP 7: SELESAI -->
                 <div class="flex flex-col items-center">
                     <div
                         class="w-12 h-12 rounded-full
@@ -264,8 +264,9 @@
             ring-4 ring-teal-200 mb-2">
 
                         <!-- ICON  -->
-                        <svg class="w-7 h-7 fill-teal-600" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" viewBox="0 0 240 240">
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="
+                        <svg class="w-7 h-7 fill-teal-600" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"
+                            viewBox="0 0 240 240">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="
     M 220,20
     L 10,105
     L 75,125
@@ -275,10 +276,10 @@
     L 130,165
     L 175,195
     L 220,20
-    Z"/>
+    Z" />
 
                         </svg>
-          
+
 
                     </div>
 
@@ -289,8 +290,6 @@
 
                 @php
                     $steps = [
-                        
-
                         [
                             'label' => 'Verifikasi',
                             'icon' => '
@@ -336,8 +335,9 @@
             <div class="bg-primary-teal  p-6 border-b  border-gray-50 rounded-xl">
                 <div class="flex items-center space-x-3 mb-2">
                     <div class="text-gray-50">
-                        <svg class="w- h-9 fill-gray-200" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" viewBox="0 0 240 240">
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="
+                        <svg class="w- h-9 fill-gray-200" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"
+                            viewBox="0 0 240 240">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="
     M 220,20
     L 10,105
     L 75,125
@@ -347,7 +347,7 @@
     L 130,165
     L 175,195
     L 220,20
-    Z"/>
+    Z" />
 
                         </svg>
                     </div>
@@ -355,6 +355,16 @@
                 </div>
                 <p class="text-gray-200 text-xl ml-3">Alasan Daftar</p>
             </div>
+
+            @if ($errors->any())
+                <div class="bg-teal-200 p-4 rounded mb-4">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li class="text-red-600">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <form action="{{ route('pendaftaransiswa.storeStep8') }}" method="POST" enctype="multipart/form-data"
                 class="bg-white shadow-lg rounded-xl overflow-hidden">
@@ -481,7 +491,7 @@
 
     </main>
 
-   
+
 
 </body>
 

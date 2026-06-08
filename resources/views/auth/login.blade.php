@@ -134,9 +134,9 @@
                                     <label for="remember" class="text-gray-600 dark:text-gray-300">Ingat saya</label>
                                 </div>
                             </div>
-                            <a href="{{ route('password.request') }}"
+                            {{-- <a href="{{ route('password.request') }}"
                                 class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
-                                Lupa kata sandi?</a>
+                                Lupa kata sandi?</a> --}}
                         </div>
                         <div class="flex justify-center">
                             <button type="submit"

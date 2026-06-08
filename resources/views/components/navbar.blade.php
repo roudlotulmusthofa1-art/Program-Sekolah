@@ -9,7 +9,7 @@
             h-full flex items-center gap-2 sm:gap-4">
 
             <!-- Home -->
-            <a href="{{ route('home') }}"
+            {{-- <a href="{{ route('home') }}"
                 class="flex flex-col items-center justify-center px-2 sm:px-4 h-full transition-colors text-white hover:border-b-2 hover:border-white
                 {{ request()->routeIs('home') ? 'border-b-2 border-white' : '' }}">
 
@@ -20,10 +20,10 @@
                 </svg>
 
                 <span class="text-2xs sm:text-xs">Home</span>
-            </a>
+            </a> --}}
 
             <!-- Daftar -->
-            <a href="{{ route('students.create') }}"
+            {{-- <a href="{{ route('students.create') }}"
                 class="flex flex-col items-center justify-center px-2 sm:px-4 h-full transition-colors text-white hover:border-b-2 hover:border-white
                 {{ request()->routeIs('daftar') ? 'border-b-2 border-white' : '' }}">
 
@@ -34,7 +34,7 @@
                 </svg>
 
                 <span class="text-2xs sm:text-xs">Daftar</span>
-            </a>
+            </a> --}}
 
             <!-- Berita -->
             <a href="{{ route('berita') }}"

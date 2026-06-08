@@ -31,127 +31,9 @@
             <form action="{{ route('guardians.store') }}" method="POST" class="p-6 space-y-6">
                 @csrf
 
-                <!-- PILIHAN -->
-                {{-- <div>
-                    <label class="text-sm text-gray-600">
-                        Saya mendaftar sebagai :
-                    </label>
-
-                    <div class="grid grid-cols-2 gap-4 mt-3">
-
-                        <div class="border-2 border-teal-600 bg-teal-50 rounded-xl p-4">
-                            <h3 class="font-semibold text-teal-700">
-                                Orang Tua / Wali
-                            </h3>
-
-                            <p class="text-sm text-gray-500 mt-1">
-                                Saya mendaftarkan anak/santri saya
-                            </p>
-                        </div>
-
-                        <div class="border rounded-xl p-4 opacity-60">
-                            <h3 class="font-semibold">
-                                Calon Santri
-                            </h3>
-
-                            <p class="text-sm text-gray-500 mt-1">
-                                Saya mendaftar sendiri
-                            </p>
-                        </div>
-
-                    </div>
-                </div> --}}
-
-                <!-- DATA SANTRI -->
-                <div>
-                    <h2 class="font-bold text-gray-700 mb-4">
-                        Data Anak Anda
-                    </h2>
-
-                    <div class="space-y-4">
-
-                        <div>
-                            <label class="block text-lg font-medium text-gray-800 mb-1">
-                                Nama Lengkap (Anak anda)
-                            </label>
-
-                            <input type="text" name="student_name"
-                                class="w-full border rounded-lg px-4 py-3
-                      border-gray-800 focus:ring-2  focus:ring-teal-500
-                       focus:border-transparent">
-                        </div>
-
-                        <div>
-                            <label class="block text-lg font-medium text-gray-800 mb-1">
-                                Kota Tempat Lahir
-                            </label>
-
-                            <input type="text" name="birth_place"
-                                class="w-full border rounded-lg px-4 py-3
-                      border-gray-800 focus:ring-2  focus:ring-teal-500
-                       focus:border-transparent">
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-
-                            <div>
-                                <label class="block text-lg font-medium text-gray-800 mb-1">
-                                    Tanggal Lahir
-                                </label>
-
-                                <input type="date" name="birth_date"
-                                    class="w-full border rounded-lg px-4 py-3
-                      border-gray-800 focus:ring-2  focus:ring-teal-500
-                       focus:border-transparent"">
-                            </div>
-
-                            <div>
-                                <label class="block text-lg font-medium text-gray-800 mb-1">
-                                    Jenis Kelamin
-                                </label>
-
-                                <div class="flex gap-4 mt-3">
-
-                                    <label class="flex items-center gap-2">
-                                        <input type="radio" name="gender" value="Laki-laki">
-
-                                        Laki-laki
-                                    </label>
-
-                                    <label class="flex items-center gap-2">
-                                        <input type="radio" name="gender" value="Perempuan">
-
-                                        Perempuan
-                                    </label>
-
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <!-- PROGRAM -->
-                        <div>
-                            <label class="block text-lg font-medium text-gray-800 mb-2">
-                                Program
-                            </label>
-
-                            <select name="program"
-                                class="w-full border rounded-lg px-4 py-3
-                      border-gray-800 focus:ring-2  focus:ring-teal-500
-                       focus:border-transparent">
-                                <option value="">Pilih Program</option>
-                                <option value="Tahfidz">Program Tahfidz</option>
-                                <option value="Regular">Program Regular</option>
-                            </select>
-                        </div>
-
-                    </div>
-                </div>
+               
 
                 <!-- DATA WALI -->
-                <div>
-                    <hr class="mt-4 mb-7 border-gray-300">
-                </div>
 
 
                 <div>
@@ -219,22 +101,7 @@
                         <div>
                             <hr class="mt-4 mb-7 border-gray-300">
                         </div>
-                        <div>
-                            <label class="block text-lg font-medium text-gray-800 mb-2">
-                                Dari mana mengetahui Tentang Kami?
-                            </label>
 
-                            <select name="information_source" class="cursor-pointer w-full border rounded-lg px-4 py-3">
-                                <option value="">Pilih sumber informasi</option>
-                                <option>Instagram</option>
-                                <option>Facebook</option>
-                                <option>Teman</option>
-                                <option>Google</option>
-                            </select>
-                        </div>
-                        <div>
-                            <hr class="mt-4 mb-7 border-gray-300">
-                        </div>
                     </div>
                 </div>
 
@@ -357,6 +224,32 @@
                     <div>
                         <hr class="mt-4 mb-7 border-gray-300">
                     </div>
+
+                    <div class="mb-5">
+                        <label class="block text-lg font-medium text-gray-800 mb-2">
+                            Code Regitrasi Santri <span class="text-red-500">*</span>
+                        </label>
+
+                        <input type="text" name="registration_code" placeholder="Contoh: GRC-2026-0001"
+                            value="{{ old('registration_code') }}"
+                            class="placeholder:text-gray-300 w-full border rounded-lg py-3 px-4
+                   border-gray-800 focus:ring-2  focus:ring-teal-500
+                       focus:border-transparent">
+<p class="text-sm text-gray-500 mt-1">
+    Masukkan kode registrasi yang diberikan oleh admin setelah santri dinyatakan diterima.
+</p>
+
+                        @error('registration_code')
+                            <p class="text-red-500 text-sm mt-1">
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <hr class="mt-4 mb-7 border-gray-300">
+                    </div>
+
                     <!-- CHECKBOX -->
                     <div class="flex items-start gap-3">
 
