@@ -67,7 +67,8 @@
 @endif
 
 {{-- ── Header Banner ───────────────────────────────────────────────── --}}
-<div class="rounded-2xl mb-6 px-6 py-5 flex flex-col sm:flex-row sm:items-center gap-4 fade-in"
+<div :class="sidebarOpen ? 'mx-64' : 'mx-20'" 
+class="rounded-2xl mb-6 px-6 py-5 flex flex-col sm:flex-row sm:items-center gap-4 fade-in transition-all duration-300 p-6"
      style="background: linear-gradient(135deg, #1a6b5a 0%, #134d40 100%);">
     <div>
         <h1 class="text-xl font-bold text-white">Data Siswa</h1>

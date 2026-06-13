@@ -13,68 +13,49 @@ class StudentController extends Controller
 {
     public function index(Request $request)
     {
-        
         // Semua kelas + jumlah siswa aktif per kelas
         $classes = SchoolClass::active()
-                               ->withCount(['students as total_aktif' => fn($q) => $q->where('status', 'aktif')])
-                               ->get();
- 
+            ->withCount(['students as total_aktif' => fn($q) => $q->where('status', 'aktif')])
+            ->get();
+
         // Hitung siswa yang belum punya skema biaya
-        $studentsWithoutFee = Student::aktif()
-                                     ->where('has_fee_scheme', false)
-                                     ->count();
- 
+        $studentsWithoutFee = Student::aktif()->where('has_fee_scheme', false)->count();
+
         // Kelas yang dipilih via URL ?class=tamhidi
         $selectedClass = null;
-        $students      = collect();
- 
+        $students = collect();
+
         if ($request->filled('class')) {
             $selectedClass = SchoolClass::where('slug', $request->class)->first();
- 
+
             if ($selectedClass) {
-                $query = Student::with(['schoolClass', 'guardian'])
-                                ->where('school_class_id', $selectedClass->id);
- 
+                $query = Student::with(['schoolClass', 'guardian'])->where('school_class_id', $selectedClass->id);
+
                 // Filter status jika ada
                 if ($request->filled('status')) {
                     $query->where('status', $request->status);
                 }
- 
+
                 // Pencarian jika ada
                 if ($request->filled('search')) {
                     $query->search($request->search);
                 }
- 
+
                 $students = $query->orderBy('name')->paginate(20)->withQueryString();
             }
         }
-return view('students.index', compact(
-            'classes',
-            'studentsWithoutFee',
-            'selectedClass',
-            'students'
-        ));
+        return view('students.index', compact('classes', 'studentsWithoutFee', 'selectedClass', 'students'));
     }
 
-// controler detail pendaftaran siswa
-    public function show($id)
-{
-    $student = Student::with('pendaftaran')->findOrFail($id);
+    // controler detail pendaftaran siswa
+    public function show($pendaftaranId)
+    {
+        $student = Student::with('pendaftaran')->where('pendaftaran_id', $pendaftaranId)->firstOrFail();
 
-    return view('students.show', compact('student'));
-}
-
-     // ── Show: Detail satu siswa ───────────────────────────────────────────
-    // public function show(Student $student)
-    // {
-    //     $student->load(['schoolClass', 'guardian']);
-    //     return view('students.show', compact('student'));
-    // }
-
+        return view('students.show', compact('student'));
+    }
 
     public function create()
-
-    
     {
         return view('students.step1');
     }
@@ -426,15 +407,12 @@ return view('students.index', compact(
     //     // TODO: implement accept logic using $registrationCode
     // }
 
-
     // view data pendaftaran
-    public function showPendaftaran($students)
-    {
-        $pendaftaran = PendaftaranSiswa::findOrFail($students->pendaftaran_id);
-        return view('students.show', compact('pendaftaran'));
-    }
-
-
+    // public function showPendaftaran($students)
+    // {
+    //     $pendaftaran = PendaftaranSiswa::findOrFail($students->pendaftaran_id);
+    //     return view('students.show', compact('pendaftaran'));
+    // }
 
     // =============================================
     // HELPER
@@ -458,113 +436,109 @@ return view('students.index', compact(
     // ── Store: Simpan siswa baru ───────────────────────────────────────────
     public function store(Request $request)
     {
-        
         $validated = $request->validate([
             'school_class_id' => 'required|exists:school_classes,id',
-            'nis'             => 'nullable|string|unique:students,nis',
-            'name'            => 'required|string|max:255',
-            'birth_place'     => 'nullable|string|max:100',
-            'birth_date'      => 'nullable|date',
-            'gender'          => 'required|in:L,P',
-            'address'         => 'nullable|string',
-            'phone'           => 'nullable|string|max:20',
-            'photo'           => 'nullable|image|max:2048',
-            'entry_date'      => 'nullable|date',
-            'status'          => 'required|in:aktif,nonaktif,alumni,keluar',
-            'guardian_id'     => 'nullable|exists:guardians,id',
+            'nis' => 'nullable|string|unique:students,nis',
+            'name' => 'required|string|max:255',
+            'birth_place' => 'nullable|string|max:100',
+            'birth_date' => 'nullable|date',
+            'gender' => 'required|in:L,P',
+            'address' => 'nullable|string',
+            'phone' => 'nullable|string|max:20',
+            'photo' => 'nullable|image|max:2048',
+            'entry_date' => 'nullable|date',
+            'status' => 'required|in:aktif,nonaktif,alumni,keluar',
+            'guardian_id' => 'nullable|exists:guardians,id',
         ]);
- 
+
         if ($request->hasFile('photo')) {
             $validated['photo'] = $request->file('photo')->store('photos/students', 'public');
         }
- 
+
         $student = Student::create($validated);
- 
+
         return redirect()
             ->route('students.index', ['class' => $student->schoolClass->slug])
             ->with('success', 'Data siswa berhasil ditambahkan.');
     }
- 
+
     // ── Quick Store: Tambah cepat via modal ───────────────────────────────
     public function quickStore(Request $request)
     {
         $validated = $request->validate([
             'school_class_id' => 'required|exists:school_classes,id',
-            'name'            => 'required|string|max:255',
-            'gender'          => 'required|in:L,P',
-            'entry_date'      => 'nullable|date',
+            'name' => 'required|string|max:255',
+            'gender' => 'required|in:L,P',
+            'entry_date' => 'nullable|date',
         ]);
- 
-        $validated['status']     = 'aktif';
+
+        $validated['status'] = 'aktif';
         $validated['entry_date'] = $validated['entry_date'] ?? now()->toDateString();
- 
-        $student     = Student::create($validated);
+
+        $student = Student::create($validated);
         $schoolClass = SchoolClass::find($validated['school_class_id']);
- 
+
         return redirect()
             ->route('students.index', ['class' => $schoolClass->slug])
             ->with('success', 'Data siswa berhasil ditambahkan (mode cepat).');
     }
- 
+
     // ── Edit: Form edit siswa ─────────────────────────────────────────────
     public function edit(Student $student)
     {
-        $classes   = SchoolClass::active()->get();
+        $classes = SchoolClass::active()->get();
         $guardians = Guardian::orderBy('name')->get();
         return view('students.edit', compact('student', 'classes', 'guardians'));
     }
- 
+
     // ── Update: Simpan perubahan data siswa ───────────────────────────────
     public function update(Request $request, Student $student)
     {
         $validated = $request->validate([
             'school_class_id' => 'required|exists:school_classes,id',
-            'nis'             => 'nullable|string|unique:students,nis,' . $student->id,
-            'name'            => 'required|string|max:255',
-            'birth_place'     => 'nullable|string|max:100',
-            'birth_date'      => 'nullable|date',
-            'gender'          => 'required|in:L,P',
-            'address'         => 'nullable|string',
-            'phone'           => 'nullable|string|max:20',
-            'photo'           => 'nullable|image|max:2048',
-            'entry_date'      => 'nullable|date',
-            'status'          => 'required|in:aktif,nonaktif,alumni,keluar',
-            'guardian_id'     => 'nullable|exists:guardians,id',
+            'nis' => 'nullable|string|unique:students,nis,' . $student->id,
+            'name' => 'required|string|max:255',
+            'birth_place' => 'nullable|string|max:100',
+            'birth_date' => 'nullable|date',
+            'gender' => 'required|in:L,P',
+            'address' => 'nullable|string',
+            'phone' => 'nullable|string|max:20',
+            'photo' => 'nullable|image|max:2048',
+            'entry_date' => 'nullable|date',
+            'status' => 'required|in:aktif,nonaktif,alumni,keluar',
+            'guardian_id' => 'nullable|exists:guardians,id',
         ]);
- 
+
         if ($request->hasFile('photo')) {
             $validated['photo'] = $request->file('photo')->store('photos/students', 'public');
         }
- 
+
         $student->update($validated);
- 
-        return redirect()
-            ->route('students.show', $student)
-            ->with('success', 'Data siswa berhasil diperbarui.');
+
+        return redirect()->route('students.show', $student)->with('success', 'Data siswa berhasil diperbarui.');
     }
- 
+
     // ── Destroy: Hapus satu siswa (soft delete) ───────────────────────────
     public function destroy(Student $student)
     {
         $slug = $student->schoolClass?->slug;
         $student->delete();
- 
+
         return redirect()
             ->route('students.index', ['class' => $slug])
             ->with('success', 'Data siswa berhasil dihapus.');
     }
- 
+
     // ── Bulk Destroy: Hapus banyak siswa sekaligus ────────────────────────
     public function bulkDestroy(Request $request)
     {
         $request->validate([
-            'ids'   => 'required|array',
+            'ids' => 'required|array',
             'ids.*' => 'exists:students,id',
         ]);
- 
+
         Student::whereIn('id', $request->ids)->delete();
- 
+
         return back()->with('success', count($request->ids) . ' data siswa berhasil dihapus.');
     }
-
 }

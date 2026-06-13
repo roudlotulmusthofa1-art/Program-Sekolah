@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Student extends Model
 {
-     use HasFactory, SoftDeletes;
-    protected $fillable = ['registration_code','pendaftaran_id', 'school_class_id', 'guardian_id', 'nis', 'name', 'birth_place', 'birth_date', 'gender', 'address', 'phone', 'photo', 'entry_date', 'exit_date', 'status', 'has_fee_scheme'];
+    use HasFactory, SoftDeletes;
+    protected $fillable = ['registration_code', 'pendaftaran_id', 'school_class_id', 'guardian_id', 'nis', 'name', 'birth_place', 'birth_date', 'gender', 'address', 'phone', 'photo', 'entry_date', 'exit_date', 'status', 'has_fee_scheme'];
 
     protected $casts = [
         'birth_date' => 'date',
@@ -27,9 +27,7 @@ class Student extends Model
 
     public function guardian(): BelongsTo
     {
-        return $this->belongsTo(Guardian::class,
-        //  'guardian_id'
-        );
+        return $this->belongsTo(Guardian::class, 'guardian_id');
     }
 
     public function pendaftaran()
@@ -37,30 +35,26 @@ class Student extends Model
         return $this->belongsTo(PendaftaranSiswa::class, 'pendaftaran_id');
     }
 
-
-// ── Accessor: URL foto (pakai default jika kosong) ────────────────────
+    // ── Accessor: URL foto (pakai default jika kosong) ────────────────────
     public function getPhotoUrlAttribute(): string
     {
-        return $this->photo
-            ? asset('storage/' . $this->photo)
-            : asset('images/default-avatar.png');
+        return $this->photo ? asset('storage/' . $this->photo) : asset('images/default-avatar.png');
     }
- 
+
     // ── Scope: filter status aktif ────────────────────────────────────────
     public function scopeAktif($query)
     {
         return $query->where('status', 'aktif');
     }
- 
+
     // ── Scope: pencarian nama, tempat lahir, alamat ───────────────────────
     public function scopeSearch($query, string $keyword)
     {
         return $query->where(function ($q) use ($keyword) {
-            $q->where('name',        'like', "%{$keyword}%")
-              ->orWhere('birth_place','like', "%{$keyword}%")
-              ->orWhere('address',    'like', "%{$keyword}%")
-              ->orWhere('nis',        'like', "%{$keyword}%");
+            $q->where('name', 'like', "%{$keyword}%")
+                ->orWhere('birth_place', 'like', "%{$keyword}%")
+                ->orWhere('address', 'like', "%{$keyword}%")
+                ->orWhere('nis', 'like', "%{$keyword}%");
         });
     }
-
 }

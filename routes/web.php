@@ -154,13 +154,14 @@ Route::prefix('pendaftaransiswa')->group(function () {
 
     
 });
+// data pnerimaan siswa
+Route::get('/students', [StudentController::class, 'index'])->name('students.index');
 
 // detail pendaftaran siswa
-Route::get('/students/{id}', [StudentController::class, 'show']);
+Route::get('/students/{pendaftaranId}', [StudentController::class, 'show']);
+
+
 // dashboard
-
-
-
 
 use App\Http\Controllers\ManajemenDataController;
 use App\Http\Controllers\AkademikController;
@@ -219,9 +220,13 @@ use App\Http\Controllers\PSBController;
     });
 
     // Landing Page
-    Route::get('/landing-page', function () {
-        return view('landing-page.index');
-    })->name('landing-page');
+     Route::prefix('landing.page')->name('landing-page.')->group(function () {
+        Route::get('/berita', [LandingPageController::class, 'berita'])->name('berita');
+        Route::get('/faq', [LandingPageController::class, 'faq'])->name('faq');
+        Route::get('/galeri', [LandingPageController::class, 'galeri'])->name('galeri');
+        Route::get('/testimoni', [LandingPageController::class, 'testimoni'])->name('testimoni');
+        Route::get('/prestasi', [LandingPageController::class, 'prestasi'])->name('prestasi');
+    });
 
     // Sistem
     Route::prefix('sistem')->name('sistem.')->group(function () {

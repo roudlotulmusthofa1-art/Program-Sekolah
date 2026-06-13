@@ -392,14 +392,14 @@
                                 PP Roudlotul Musthofa
                             </p>
                             <h1 class="heading-font text-3xl text-white mb-1">
-                                {{ $student->pendaftaran->name }}
+                                {{ $student->pendaftaran->nama_lengkap }}
                             </h1>
                             <p class="text-teal-200 text-sm">
                                 NIK: {{ $student->pendaftaran->nik }}
                                 &nbsp;·&nbsp;
-                                {{ $student->pendaftaran->gender_label }}
+                                {{ $student->pendaftaran->jenis_kelamin }}
                                 &nbsp;·&nbsp;
-                                {{ \Carbon\Carbon::parse($student->pendaftaran->birth_date)->age }} tahun
+                                {{ \Carbon\Carbon::parse($student->pendaftaran->tanggal_lahir)->age }} tahun
                             </p>
                         </div>
                         <div class="text-right">
