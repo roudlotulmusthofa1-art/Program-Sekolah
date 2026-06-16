@@ -270,7 +270,7 @@
         </div>
 
         {{-- Navigation --}}
-        <nav class="flex-1 overflow-y-auto scrollbar-thin py-2 ml-1">
+        <nav class="flex-1 overflow-y-auto scrollbar-thin py-2">
 
             {{-- Dashboard --}}
             <a href="{{ route('dashboard') }}"
