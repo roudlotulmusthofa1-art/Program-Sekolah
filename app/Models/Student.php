@@ -57,4 +57,9 @@ class Student extends Model
                 ->orWhere('nis', 'like', "%{$keyword}%");
         });
     }
+
+    public function tagihans()
+    {
+        return $this->hasMany(Tagihan::class, 'santri_id');
+    }
 }

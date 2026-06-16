@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('school_classes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nama_kelas');
             $table->string('slug')->unique();
             $table->string('color', 20)->default('#3b82f6');
             $table->integer('order')->default(0);

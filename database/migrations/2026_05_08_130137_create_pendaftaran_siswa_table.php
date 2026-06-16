@@ -4,12 +4,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up(): void
     {
         Schema::create('pendaftaran_siswa', function (Blueprint $table) {
             $table->id();
+            $table->string('no_pendaftaran')->unique(); // e.g. PSB-2026-00093
 
             // STEP 1 - DATA PRIBADI
             $table->string('nama_lengkap');
@@ -33,24 +33,24 @@ return new class extends Migration
             $table->string('mother_email')->nullable();
             $table->string('mother_phone', 20)->nullable();
             $table->text('parent_address')->nullable();
-            $table->enum('income', ['<1jt','1-3jt','3-5jt','5-10jt','>10jt'])->nullable();
+            $table->enum('income', ['<1jt', '1-3jt', '3-5jt', '5-10jt', '>10jt'])->nullable();
 
             // STEP 3 - PENDIDIKAN
             $table->string('school_name')->nullable();
-            $table->enum('education_level', ['SD / MI','SMP / MTs','SMA / MA','SMK'])->nullable();
+            $table->enum('education_level', ['SD / MI', 'SMP / MTs', 'SMA / MA', 'SMK'])->nullable();
             $table->year('graduation_year')->nullable();
             $table->text('achievement')->nullable();
 
             // STEP 4 - KESEHATAN
-            $table->enum('blood_type', ['A','B','AB','O'])->nullable();
+            $table->enum('blood_type', ['A', 'B', 'AB', 'O'])->nullable();
             $table->text('medical_history')->nullable();
             $table->text('allergy')->nullable();
             $table->text('special_condition')->nullable();
 
             // STEP 5 - KEAGAMAAN
-            $table->enum('quran_reading_ability', ['belum_bisa','iqro','terbata','lancar','tartil'])->nullable();
+            $table->enum('quran_reading_ability', ['belum_bisa', 'iqro', 'terbata', 'lancar', 'tartil'])->nullable();
             $table->unsignedTinyInteger('memorized_juz')->default(0)->nullable();
-            $table->enum('previous_pesantren', ['ya','tidak'])->nullable();
+            $table->enum('previous_pesantren', ['ya', 'tidak'])->nullable();
             $table->text('religious_skill')->nullable();
 
             // STEP 6 - INFO LAINNYA
@@ -65,15 +65,24 @@ return new class extends Migration
             $table->string('certificate')->nullable();
 
             // STEP 8 - MOTIVASI
-            $table->text('alasan',)->nullable();
+            $table->text('alasan')->nullable();
 
             // STEP 9 - VERIFIKASI & STATUS
             $table->boolean('agree_rules')->default(false);
             $table->boolean('agree_payment')->default(false);
             $table->boolean('agree_data_truth')->default(false);
-            $table->enum('status', ['draft','submitted','reviewed','accepted','rejected'])->default('draft');
+            $table->enum('status', ['pending', 'follow_up', 'dihubungi', 'dalam_proses', 'diterima', 'ditolak'])->default('pending');
             $table->unsignedTinyInteger('last_step')->default(0);
+            $table->string('periode_psb')->nullable(); // e.g. PSB 2026
+            $table->text('catatan_admin')->nullable();
 
+ // Relasi ke guardian, student, school_classes
+            $table->foreignId('guardian_id')->nullable()->constrained('guardians')->nullOnDelete();
+            $table->foreignId('student_id')->nullable()->constrained('students')->nullOnDelete();
+            $table->foreignId('school_classes_id')->nullable()->constrained('school_classes')->nullOnDelete();
+
+             $table->boolean('is_archived')->default(false);
+            $table->timestamp('diterima_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -10,7 +10,7 @@ class SchoolClass extends Model
 {
      use HasFactory;
     protected $fillable = [
-        'name',
+        'nama_kelas',
         'slug',
         'color',
         'order',

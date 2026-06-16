@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class PendaftaranSiswa extends Model
 {
@@ -13,7 +17,7 @@ class PendaftaranSiswa extends Model
     protected $table = 'pendaftaran_siswa';
 
     protected $fillable = [
-        // =============================================
+        'no_pendaftaran',
         // STEP 1 - DATA PRIBADI
         // =============================================
         'nama_lengkap',
@@ -93,52 +97,70 @@ class PendaftaranSiswa extends Model
         'agree_data_truth',
         'status',
         'last_step',
+        'periode_psb',
+        'catatan_admin',
+        'kode_akses',
+        'is_archived',
+        'diterima_at',
     ];
 
     protected $casts = [
-        'tanggal_lahir'   => 'date',
-        'anak_ke'         => 'integer',
-        'jumlah_saudara'  => 'integer',
-        'memorized_juz'   => 'integer',
-        'agree_rules'     => 'boolean',
-        'agree_payment'   => 'boolean',
-        'agree_data_truth'=> 'boolean',
-        'last_step'       => 'integer',
+        'tanggal_lahir' => 'date',
+        'anak_ke' => 'integer',
+        'jumlah_saudara' => 'integer',
+        'memorized_juz' => 'integer',
+        'agree_rules' => 'boolean',
+        'agree_payment' => 'boolean',
+        'agree_data_truth' => 'boolean',
+        'last_step' => 'integer',
         'graduation_year' => 'integer',
+        'tanggal_daftar' => 'date',
+        'diterima_at' => 'datetime',
+        'is_archived' => 'boolean',
     ];
 
     // =============================================
     // CONSTANTS
     // =============================================
-
-    const STATUS_DRAFT     = 'draft';
+    const STATUS_LABELS = [
+        'pending' => 'Pending',
+        'follow_up' => 'Perlu Follow-up',
+        'dihubungi' => 'Dihubungi',
+        'dalam_proses' => 'Dalam Proses',
+        'diterima' => 'Diterima',
+        'ditolak' => 'Ditolak',
+    ];
+    const STATUS_COLORS = [
+        'pending' => 'yellow',
+        'follow_up' => 'orange',
+        'dihubungi' => 'blue',
+        'dalam_proses' => 'purple',
+        'diterima' => 'green',
+        'ditolak' => 'red',
+    ];
+    const STATUS_DRAFT = 'draft';
     const STATUS_SUBMITTED = 'submitted';
-    const STATUS_REVIEWED  = 'reviewed';
-    const STATUS_ACCEPTED  = 'accepted';
-    const STATUS_REJECTED  = 'rejected';
+    const STATUS_REVIEWED = 'reviewed';
+    const STATUS_ACCEPTED = 'accepted';
+    const STATUS_REJECTED = 'rejected';
 
     const INCOME_OPTIONS = [
-        '<1jt'   => 'Kurang dari Rp 1.000.000',
-        '1-3jt'  => 'Rp 1.000.000 - Rp 3.000.000',
-        '3-5jt'  => 'Rp 3.000.000 - Rp 5.000.000',
+        '<1jt' => 'Kurang dari Rp 1.000.000',
+        '1-3jt' => 'Rp 1.000.000 - Rp 3.000.000',
+        '3-5jt' => 'Rp 3.000.000 - Rp 5.000.000',
         '5-10jt' => 'Rp 5.000.000 - Rp 10.000.000',
-        '>10jt'  => 'Lebih dari Rp 10.000.000',
+        '>10jt' => 'Lebih dari Rp 10.000.000',
     ];
 
     const QURAN_ABILITY_OPTIONS = [
         'belum_bisa' => 'Belum Bisa',
-        'iqro'       => "Iqro'",
-        'terbata'    => 'Bisa Membaca Terbata-bata',
-        'lancar'     => 'Lancar',
-        'tartil'     => 'Tartil',
+        'iqro' => "Iqro'",
+        'terbata' => 'Bisa Membaca Terbata-bata',
+        'lancar' => 'Lancar',
+        'tartil' => 'Tartil',
     ];
 
-    const EDUCATION_LEVELS = [
-        'SD / MI',
-        'SMP / MTs',
-        'SMA / MA',
-        'SMK',
-    ];
+    const EDUCATION_LEVELS = ['SD / MI', 'SMP / MTs', 'SMA / MA', 'SMK'];
 
     // =============================================
     // HELPER METHODS
@@ -149,10 +171,7 @@ class PendaftaranSiswa extends Model
      */
     public function isDocumentsComplete(): bool
     {
-        return $this->photo
-            && $this->birth_certificate
-            && $this->family_card
-            && $this->certificate;
+        return $this->photo && $this->birth_certificate && $this->family_card && $this->certificate;
     }
 
     /**
@@ -160,12 +179,9 @@ class PendaftaranSiswa extends Model
      */
     public function countUploadedDocuments(): int
     {
-        return collect([
-            $this->photo,
-            $this->birth_certificate,
-            $this->family_card,
-            $this->certificate,
-        ])->filter()->count();
+        return collect([$this->photo, $this->birth_certificate, $this->family_card, $this->certificate])
+            ->filter()
+            ->count();
     }
 
     /**
@@ -173,9 +189,7 @@ class PendaftaranSiswa extends Model
      */
     public function isAllAgreed(): bool
     {
-        return $this->agree_rules
-            && $this->agree_payment
-            && $this->agree_data_truth;
+        return $this->agree_rules && $this->agree_payment && $this->agree_data_truth;
     }
 
     /**
@@ -191,14 +205,7 @@ class PendaftaranSiswa extends Model
      */
     public function getStatusLabelAttribute(): string
     {
-        return match ($this->status) {
-            self::STATUS_DRAFT     => 'Draft',
-            self::STATUS_SUBMITTED => 'Menunggu Review',
-            self::STATUS_REVIEWED  => 'Sedang Diproses',
-            self::STATUS_ACCEPTED  => 'Diterima',
-            self::STATUS_REJECTED  => 'Ditolak',
-            default                => 'Tidak Diketahui',
-        };
+        return self::STATUS_LABELS[$this->status] ?? $this->status;
     }
 
     /**
@@ -230,9 +237,12 @@ class PendaftaranSiswa extends Model
      */
     public function getPhotoUrlAttribute(): ?string
     {
-        return $this->photo
-            ? asset('storage/' . $this->photo)
-            : null;
+        return $this->photo ? asset('storage/' . $this->photo) : null;
+    }
+
+    public function getStatusColorAttribute(): string
+    {
+        return self::STATUS_COLORS[$this->status] ?? 'gray';
     }
 
     // =============================================
@@ -254,8 +264,83 @@ class PendaftaranSiswa extends Model
         return $query->where('status', self::STATUS_DRAFT);
     }
 
-    public function student()
-{
-    return $this->hasOne(Student::class, 'pendaftaran_id');
-}
+    // ─── Scopes ───────────────────────────────────────────────────
+    public function scopeActive($q)    { return $q->where('is_archived', false); }
+    public function scopeArchived($q)  { return $q->where('is_archived', true); }
+    public function scopeStatus($q, $s){ return $q->where('status', $s); }
+
+
+    // ─── Auto-generate nomor pendaftaran ─────────────────────────
+    protected static function booted(): void
+    {
+        static::creating(function (PendaftaranSiswa $p) {
+            if (empty($p->no_pendaftaran)) {
+                $year  = now()->year;
+                $last  = static::whereYear('created_at', $year)->max('id') ?? 0;
+                $p->no_pendaftaran = 'PSB-' . $year . '-' . str_pad($last + 1, 5, '0', STR_PAD_LEFT);
+            }
+            if (empty($p->tanggal_daftar)) {
+                $p->tanggal_daftar = now()->toDateString();
+            }
+        });
+    }
+ 
+    
+    // ─── Generate kode akses unik ─────────────────────────────────
+    public static function generateKodeAkses(): string
+    {
+        do {
+            $kode = strtoupper(Str::random(3)) . '-' . rand(1000, 9999);
+        } while (static::where('kode_akses', $kode)->exists());
+ 
+        return $kode;
+    }
+ 
+    // ─── Terima pendaftaran → buat Student ───────────────────────
+    public function terima(?int $schoolClassId = null): Student
+    {
+        // Buat atau update Student
+        $student = Student::updateOrCreate(
+            ['pendaftaran_id' => $this->id],
+            [
+                'name'            => $this->nama_lengkap,
+                'guardian_id'     => $this->guardian_id,
+                'school_classes_id' => $schoolClassId ?? $this->school_classes_id,
+                'program'         => $this->program,
+                'status'          => 'active',
+                'tanggal_masuk'   => now()->toDateString(),
+            ]
+        );
+ 
+        // Buat kode akses untuk wali
+        $kode = self::generateKodeAkses();
+ 
+        $this->update([
+            'status'      => 'diterima',
+            'student_id'  => $student->id,
+            'kode_akses'  => $kode,
+            'diterima_at' => now()->toDateTimeString(),
+            'school_classes_id' => $schoolClassId ?? $this->school_classes_id,
+        ]);
+ 
+        return $student;
+    }
+
+
+    public function guardian(): BelongsTo
+    {
+        return $this->belongsTo(Guardian::class);
+    }
+ 
+    public function student(): HasOne
+    {
+        return $this->hasOne(Student::class, 'pendaftaran_id');
+    }
+ 
+    public function schoolClass(): BelongsTo
+    {
+        return $this->belongsTo(SchoolClass::class, 'school_classes_id');
+    }
+
+
 }

@@ -18,7 +18,7 @@ class SchoolClassFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->word(),
+            'nama_kelas' => fake()->word(),
             'slug' => fake()->slug(),
             'color' => fake()->hexColor(),
             'order' => fake()->numberBetween(1, 20),

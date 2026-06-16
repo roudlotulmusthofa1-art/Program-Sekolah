@@ -12,7 +12,7 @@ return new class extends Migration
 
             $table->id();
 
-            $table->string('student_name');
+            $table->string('teacher_name');
 
             $table->string('birth_place');
 
@@ -22,6 +22,7 @@ return new class extends Migration
                 'Laki-laki',
                 'Perempuan'
             ]);
+            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
 
             $table->string('whatsapp');
 

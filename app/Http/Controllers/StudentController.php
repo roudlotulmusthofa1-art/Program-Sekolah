@@ -24,7 +24,7 @@ class StudentController extends Controller
         // Kelas yang dipilih via URL ?class=tamhidi
         $selectedClass = null;
         $students = collect();
-
+        $students = Student::with('pendaftaran')->paginate(15);
         if ($request->filled('class')) {
             $selectedClass = SchoolClass::where('slug', $request->class)->first();
 

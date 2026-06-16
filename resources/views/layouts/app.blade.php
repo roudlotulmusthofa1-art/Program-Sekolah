@@ -156,7 +156,7 @@
         <div class="w-60 h-screen overflow-y-auto bg-teal-800 p-4">
 
             {{-- Logo / Nama Pesantren --}}
-            <div class="flex items-center gap-3 px-4 py-5 border-b border-white/10 ml-1">
+            <div class="flex items-center gap-3 px-4 py-5 border-b border-white/10">
                 <div class="shrink-0 w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
@@ -172,7 +172,7 @@
             {{-- Lihat Website --}}
             <div class="flex items-center w-full h-16 border-b border-white/10">
                 <a href="{{ url('/') }}" target="_blank"
-                    class="flex items-center gap-1 ml-1 w-52 h-12 px-4 py-3 rounded-lg text-white/70 hover:text-white hover:bg-white/20 transition-colors text-sm ">
+                    class="flex items-center gap-1 w-52 h-12 px-4 py-3 rounded-lg text-white/70 hover:text-white hover:bg-white/20 transition-colors text-sm ">
 
                     <i data-lucide="globe" class="w-8 h-4 shrink-0"></i>
                     <span>Lihat Website</span>
@@ -181,7 +181,7 @@
             </div>
 
             {{-- Navigation --}}
-            <nav class="flex-1 overflow-y-auto scrollbar-thin py-2 ml-1">
+            <nav class="flex-1 overflow-y-auto scrollbar-thin py-2">
 
                 {{-- Dashboard --}}
                 <a href="{{ route('dashboard') }}"
@@ -230,14 +230,16 @@
         </div>
 
     </div>
+
+    
     {{-- ════════════════════════════════════════════════════════
      SIDEBAR tampilan desktop
 ════════════════════════════════════════════════════════ --}}
     <aside :class="sidebarOpen ? 'w-64' : 'w-20'"
-        class="hidden md:flex fixed left-0 top-0 h-screen  bg-teal-800 shadow-lg transition-all duration-300 overflow-hidden flex flex-col">
+        class="hidden md:flex fixed left-0 top-0 h-screen  bg-teal-800 shadow-lg transition-all duration-300 overflow-hidden flex-col">
 
         {{-- Logo / Nama Pesantren --}}
-        <div class="flex items-center gap-3 px-4 py-5 border-b border-white/10 ml-1">
+        <div class="flex items-center gap-3 px-4 py-5 border-b border-white/10 ">
             <div class="shrink-0 w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
                 <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
@@ -261,7 +263,7 @@
         {{-- Lihat Website --}}
         <div class="flex items-center w-full h-16 border-b border-white/10">
             <a href="{{ url('/') }}" target="_blank"
-                class="flex items-center gap-1 ml-1 w-52 h-12 px-4 py-3 rounded-lg text-white/70 hover:text-white hover:bg-white/20 transition-colors text-sm ">
+                class="flex items-center gap-1  w-52 h-12 px-4 py-3 rounded-lg text-white/70 hover:text-white hover:bg-white/20 transition-colors text-sm ">
 
                 <i data-lucide="globe" class="w-8 h-4 shrink-0"></i>
                 <span x-show="sidebarOpen" x-cloak>Lihat Website</span>
@@ -274,7 +276,7 @@
 
             {{-- Dashboard --}}
             <a href="{{ route('dashboard') }}"
-                class="sidebar-link flex items-center gap-3 px-4 py-2.5 text-base text-white mx-2 rounded-lg mb-1 {{ request()->routeIs('dashboard*') ? 'active' : '' }}">
+                class="sidebar-link flex items-center gap-3 px-4 py-2.5 text-base hover:bg-white/10 text-white mx-2 rounded-lg mb-1 {{ request()->routeIs('dashboard*') ? 'active' : '' }}">
                 <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i>
                 <span x-show="sidebarOpen" x-cloak>Dashboard</span>
             </a>
@@ -295,7 +297,7 @@
                             <i data-lucide="chevron-right" class="w-3 h-3 transition-transform shrink-0"
                                 x-show="sidebarOpen" x-cloak :class="open ? 'rotate-90' : ''"></i>
                         </button>
-                        <div x-show="open && sidebarOpen" x-cloak class="ml-8 mt-0.5 space-y-0.5">
+                        <div x-show="open && sidebarOpen" x-cloak class="ml-8 mt-0.5 space-y-0.5 mr-3">
                             @foreach ($group['children'] as $child)
                                 <a href="{{ route($child['route']) }}"
                                     class="block px-4 py-2 text-base text-white hover:text-white hover:bg-white/10 rounded-lg transition-colors {{ request()->routeIs($child['route']) ? 'text-white bg-amber-500' : '' }}">
@@ -306,7 +308,7 @@
                         </div>
                         {{-- menu ketika sidebar tidak terbuka --}}
 
-                        <div x-show="!sidebarOpen" class="flex flex-col items-center mt-2 gap-2">
+                        <div x-show="!sidebarOpen" class="flex flex-col items-center mt-2 gap-2  mr-2">
                             @foreach ($group['children'] as $child)
                                 <a href="{{ route($child['route']) }}"
                                     class="p-2 rounded-lg text-white hover:bg-white/10">
@@ -343,10 +345,14 @@
     {{-- ════════════════════════════════════════════════════════
      MAIN WRAPPER
 ════════════════════════════════════════════════════════ --}}
-    <div :class="sidebarOpen ? 'ml-56' : 'ml-16'" class="transition-all duration-300 min-h-screen flex flex-col">
+    <div  :class="{
+        'md:ml-60': sidebarOpen,
+        'md:ml-20': !sidebarOpen
+    }" class="transition-all duration-300 min-h-screen flex flex-col">
 
         {{-- ── TOPBAR ── --}}
-        <header class="sticky top-0 z-20 bg-white border-b border-gray-100 ml-8 flex items-center px-6 h-14 gap-4 ">
+        <header :class="sidebarOpen ? 'md:ml-4' : 'md:ml-0'"
+            class="ml-8 sticky top-0 z-20 bg-white border-b border-gray-100 flex items-center px-6 h-20 gap-4">
             {{-- menu button for mobile --}}
             <button @click="mobileSidebarOpen = true" class="md:hidden">
 
