@@ -73,16 +73,18 @@ return new class extends Migration {
             $table->boolean('agree_data_truth')->default(false);
             $table->enum('status', ['pending', 'follow_up', 'dihubungi', 'dalam_proses', 'diterima', 'ditolak'])->default('pending');
             $table->unsignedTinyInteger('last_step')->default(0);
+            $table->date('tanggal_daftar')->nullable();
             $table->string('periode_psb')->nullable(); // e.g. PSB 2026
             $table->text('catatan_admin')->nullable();
+            
+            // Relasi ke guardian, student, school_classes
+            $table->unsignedBigInteger('guardian_id')->nullable();
+            // $table->foreignId('student_id')->nullable()->constrained('students')->nullOnDelete();
+            // $table->foreignId('school_classes_id')->nullable()->constrained('school_classes')->nullOnDelete();
 
- // Relasi ke guardian, student, school_classes
-            $table->foreignId('guardian_id')->nullable()->constrained('guardians')->nullOnDelete();
-            $table->foreignId('student_id')->nullable()->constrained('students')->nullOnDelete();
-            $table->foreignId('school_classes_id')->nullable()->constrained('school_classes')->nullOnDelete();
-
-             $table->boolean('is_archived')->default(false);
+            $table->boolean('is_archived')->default(false);
             $table->timestamp('diterima_at')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });

@@ -78,8 +78,6 @@ use App\Http\Controllers\DashboardController;
 //     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 // });
 
-
-
 // Formulir
 use App\Http\Controllers\RegistrationController;
 
@@ -117,49 +115,47 @@ use App\Http\Controllers\SchoolClassController;
 // Route::resource('classes', SchoolClassController::class);
 
 // pendaftaran siswa
-use App\Http\Controllers\StudentController;
+use App\Http\Controllers\PendaftaranController;
 
 Route::prefix('pendaftaransiswa')->group(function () {
-    Route::get('/step1', [StudentController::class, 'create'])->name('pendaftaransiswa.step1');
-    Route::post('/step1', [StudentController::class, 'storeStep1'])->name('pendaftaransiswa.storeStep1');
+    Route::get('/step1', [PendaftaranController::class, 'create'])->name('pendaftaransiswa.step1');
+    Route::post('/step1', [PendaftaranController::class, 'storeStep1'])->name('pendaftaransiswa.storeStep1');
 
-    Route::get('/step2', [StudentController::class, 'step2'])->name('pendaftaransiswa.step2');
-    Route::post('/step2', [StudentController::class, 'storeStep2'])->name('pendaftaransiswa.storeStep2');
+    Route::get('/step2', [PendaftaranController::class, 'step2'])->name('pendaftaransiswa.step2');
+    Route::post('/step2', [PendaftaranController::class, 'storeStep2'])->name('pendaftaransiswa.storeStep2');
 
-    Route::get('/step3', [StudentController::class, 'step3'])->name('pendaftaransiswa.step3');
-    Route::post('/step3', [StudentController::class, 'storeStep3'])->name('pendaftaransiswa.storeStep3');
+    Route::get('/step3', [PendaftaranController::class, 'step3'])->name('pendaftaransiswa.step3');
+    Route::post('/step3', [PendaftaranController::class, 'storeStep3'])->name('pendaftaransiswa.storeStep3');
 
-    Route::get('/step4', [StudentController::class, 'step4'])->name('pendaftaransiswa.step4');
-    Route::post('/step4', [StudentController::class, 'storeStep4'])->name('pendaftaransiswa.storeStep4');
+    Route::get('/step4', [PendaftaranController::class, 'step4'])->name('pendaftaransiswa.step4');
+    Route::post('/step4', [PendaftaranController::class, 'storeStep4'])->name('pendaftaransiswa.storeStep4');
 
-    Route::get('/step5', [StudentController::class, 'step5'])->name('pendaftaransiswa.step5');
-    Route::post('/step5', [StudentController::class, 'storeStep5'])->name('pendaftaransiswa.storeStep5');
+    Route::get('/step5', [PendaftaranController::class, 'step5'])->name('pendaftaransiswa.step5');
+    Route::post('/step5', [PendaftaranController::class, 'storeStep5'])->name('pendaftaransiswa.storeStep5');
 
-    Route::get('/step6', [StudentController::class, 'step6'])->name('pendaftaransiswa.step6');
-    Route::post('/step6', [StudentController::class, 'storeStep6'])->name('pendaftaransiswa.storeStep6');
+    Route::get('/step6', [PendaftaranController::class, 'step6'])->name('pendaftaransiswa.step6');
+    Route::post('/step6', [PendaftaranController::class, 'storeStep6'])->name('pendaftaransiswa.storeStep6');
 
-    Route::get('/step7', [StudentController::class, 'step7'])->name('pendaftaransiswa.step7');
-    Route::post('/step7', [StudentController::class, 'storeStep7'])->name('pendaftaransiswa.storeStep7');
+    Route::get('/step7', [PendaftaranController::class, 'step7'])->name('pendaftaransiswa.step7');
+    Route::post('/step7', [PendaftaranController::class, 'storeStep7'])->name('pendaftaransiswa.storeStep7');
 
-    Route::get('/step8', [StudentController::class, 'step8'])->name('pendaftaransiswa.step8');
-    Route::post('/step8', [StudentController::class, 'storeStep8'])->name('pendaftaransiswa.storeStep8');
+    Route::get('/step8', [PendaftaranController::class, 'step8'])->name('pendaftaransiswa.step8');
+    Route::post('/step8', [PendaftaranController::class, 'storeStep8'])->name('pendaftaransiswa.storeStep8');
 
-    Route::get('/step9', [StudentController::class, 'step9'])->name('pendaftaransiswa.step9');
-    Route::post('/step9', [StudentController::class, 'storeStep9'])->name('pendaftaransiswa.storeStep9');
+    Route::get('/step9', [PendaftaranController::class, 'step9'])->name('pendaftaransiswa.step9');
+    Route::post('/step9', [PendaftaranController::class, 'storeStep9'])->name('pendaftaransiswa.storeStep9');
 
     //  success page
-    Route::get('/success', [StudentController::class, 'success'])->name('pendaftaransiswa.success');
+    Route::get('/success', [PendaftaranController::class, 'success'])->name('pendaftaransiswa.success');
 
-    Route::get('/{id}', [StudentController::class, 'show'])->name('pendaftaransiswa.show');
-
-    
+    // Route to show a single pendaftaran is not available yet in controller.
+    // Route::get('/{id}', [PendaftaranController::class, 'show'])->name('pendaftaransiswa.show');
 });
 // data pnerimaan siswa
-Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+// Route::get('/students', [PendaftaranController::class, 'index'])->name('students.index');
 
 // detail pendaftaran siswa
-Route::get('/students/{pendaftaranId}', [StudentController::class, 'show']);
-
+// Route::get('/students/{pendaftaranId}', [PendaftaranController::class, 'show']);
 
 // dashboard
 
@@ -168,6 +164,7 @@ use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PSBController;
+use App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -177,19 +174,23 @@ use App\Http\Controllers\PSBController;
 
 // Route::middleware(['auth'])->group(function () {
 
-    // Dashboard Utama
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+// Dashboard Utama
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-    // Manajemen Data
-    Route::prefix('manajemen-data')->name('manajemen-data.')->group(function () {
+// Manajemen Data
+Route::prefix('manajemen-data')
+    ->name('manajemen-data.')
+    ->group(function () {
         Route::get('/santri', [StudentController::class, 'index'])->name('santri');
         Route::get('/ustadz', [ManajemenDataController::class, 'ustadz'])->name('ustadz');
         Route::get('/kelas', [ManajemenDataController::class, 'kelas'])->name('kelas');
     });
 
-    // Akademik
-    Route::prefix('akademik')->name('akademik.')->group(function () {
+// Akademik
+Route::prefix('akademik')
+    ->name('akademik.')
+    ->group(function () {
         Route::get('/nilai', [AkademikController::class, 'nilai'])->name('nilai');
         Route::post('/nilai/input', [AkademikController::class, 'inputNilai'])->name('nilai.input');
         Route::get('/absensi', [AkademikController::class, 'absensi'])->name('absensi');
@@ -198,29 +199,37 @@ use App\Http\Controllers\PSBController;
         Route::post('/tahfidz/input', [AkademikController::class, 'inputTahfidz'])->name('tahfidz.input');
     });
 
-    // Keuangan
-    Route::prefix('keuangan')->name('keuangan.')->group(function () {
+// Keuangan
+Route::prefix('keuangan')
+    ->name('keuangan.')
+    ->group(function () {
         Route::get('/tagihan', [KeuanganController::class, 'tagihan'])->name('tagihan');
         Route::get('/pembayaran', [KeuanganController::class, 'pembayaran'])->name('pembayaran');
         Route::get('/tunggakan', [KeuanganController::class, 'tunggakan'])->name('tunggakan');
     });
 
-    // Laporan
-    Route::prefix('laporan')->name('laporan.')->group(function () {
+// Laporan
+Route::prefix('laporan')
+    ->name('laporan.')
+    ->group(function () {
         Route::get('/akademik', [LaporanController::class, 'akademik'])->name('akademik');
         Route::get('/keuangan', [LaporanController::class, 'keuangan'])->name('keuangan');
         Route::get('/kehadiran', [LaporanController::class, 'kehadiran'])->name('kehadiran');
     });
 
-    // PSB (Penerimaan Santri Baru)
-    Route::prefix('psb')->name('psb.')->group(function () {
+// PSB (Penerimaan Santri Baru)
+Route::prefix('psb')
+    ->name('psb.')
+    ->group(function () {
         Route::get('/', [PSBController::class, 'index'])->name('index');
         Route::get('/pendaftar', [PSBController::class, 'pendaftar'])->name('pendaftar');
         Route::get('/seleksi', [PSBController::class, 'seleksi'])->name('seleksi');
     });
 
-    // Landing Page
-     Route::prefix('landing.page')->name('landing-page.')->group(function () {
+// Landing Page
+Route::prefix('landing.page')
+    ->name('landing-page.')
+    ->group(function () {
         Route::get('/berita', [LandingPageController::class, 'berita'])->name('berita');
         Route::get('/faq', [LandingPageController::class, 'faq'])->name('faq');
         Route::get('/galeri', [LandingPageController::class, 'galeri'])->name('galeri');
@@ -228,8 +237,10 @@ use App\Http\Controllers\PSBController;
         Route::get('/prestasi', [LandingPageController::class, 'prestasi'])->name('prestasi');
     });
 
-    // Sistem
-    Route::prefix('sistem')->name('sistem.')->group(function () {
+// Sistem
+Route::prefix('sistem')
+    ->name('sistem.')
+    ->group(function () {
         Route::get('/pengaturan', function () {
             return view('sistem.pengaturan');
         })->name('pengaturan');
@@ -248,8 +259,6 @@ Route::get('/login', function () {
 // Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
 // Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Routes – Manajemen Data Santri
@@ -260,19 +269,112 @@ Route::get('/login', function () {
 
 // Route::middleware(['auth'])->group(function () {
 
-    // ── Tambahan (harus di atas resource) ────────────────────────────────
-    Route::post('santri/quick-store',  [StudentController::class, 'quickStore'])->name('students.quickStore');
-    Route::post('santri/bulk-destroy', [StudentController::class, 'bulkDestroy'])->name('students.bulkDestroy');
+// ── Tambahan (harus di atas resource) ────────────────────────────────
+Route::post('santri/quick-store', [StudentController::class, 'quickStore'])->name('students.quickStore');
+Route::post('santri/bulk-destroy', [StudentController::class, 'bulkDestroy'])->name('students.bulkDestroy');
 
-    // ── Resource → URL tetap /santri, route name pakai students.* ────────
-    Route::resource('santri', StudentController::class)->names([
-        'index'   => 'students.index',
-        'create'  => 'students.create',
-        'store'   => 'students.store',
-        'show'    => 'students.show',
-        'edit'    => 'students.edit',
-        'update'  => 'students.update',
-        'destroy' => 'students.destroy',
-    ]);
+// ── Resource → URL tetap /santri, route name pakai students.* ────────
+Route::resource('santri', StudentController::class)->names([
+    'index' => 'students.index',
+    'create' => 'students.create',
+    'store' => 'students.store',
+    'show' => 'students.show',
+    'edit' => 'students.edit',
+    'update' => 'students.update',
+    'destroy' => 'students.destroy',
+]);
 
 // });
+
+use App\Http\Controllers\Admin\PendaftaranController as AdminPendaftaranController;
+
+// ─────────────────────────────────────────────────────────────
+// PSB ADMIN — Pendaftaran Masuk
+// URL: /psb/pendaftaran/...
+// ─────────────────────────────────────────────────────────────
+Route::prefix('psb/pendaftaran')
+    ->name('psb.pendaftaran.')
+    ->group(function () {
+        Route::post('/bulk-terima', [AdminPendaftaranController::class, 'bulkTerima'])->name('bulk-terima');
+        Route::post('/bulk-tolak', [AdminPendaftaranController::class, 'bulkTolak'])->name('bulk-tolak');
+        Route::delete('/bulk-destroy', [AdminPendaftaranController::class, 'bulkDestroy'])->name('bulk-destroy');
+        Route::get('/', [AdminPendaftaranController::class, 'index'])->name('index');
+
+        Route::get('/{pendaftaran}', [AdminPendaftaranController::class, 'show'])->name('show');
+
+        Route::patch('/{pendaftaran}/status', [AdminPendaftaranController::class, 'updateStatus'])->name('update-status');
+
+        Route::post('/{pendaftaran}/terima', [AdminPendaftaranController::class, 'terima'])->name('terima');
+
+        Route::post('/{pendaftaran}/tolak', [AdminPendaftaranController::class, 'tolak'])->name('tolak');
+
+        Route::post('/{pendaftaran}/archive', [AdminPendaftaranController::class, 'archive'])->name('archive');
+
+        Route::delete('/{pendaftaran}', [AdminPendaftaranController::class, 'destroy'])->name('destroy');
+
+        Route::get('/{pendaftaran}/kirim-kode', [AdminPendaftaranController::class, 'kirimKode'])->name('kirim-kode');
+    });
+
+// ─────────────────────────────────────────────────────────────
+// GUARDIAN — Register via Kode Akses & Dashboard
+// ─────────────────────────────────────────────────────────────
+Route::prefix('wali')
+    ->name('guardian.')
+    ->group(function () {
+        // Register pakai kode akses
+        Route::get('/daftar', [GuardianController::class, 'registerForm'])->name('register');
+        Route::post('/verify-kode', [GuardianController::class, 'verifyKode'])->name('verify-kode');
+        Route::get('/isi-data', [GuardianController::class, 'formData'])->name('form-data');
+        Route::post('/simpan-data', [GuardianController::class, 'simpanData'])->name('simpan-data');
+
+        // Login
+        Route::get('/masuk', [GuardianController::class, 'loginForm'])->name('login');
+        Route::post('/masuk', [GuardianController::class, 'login'])->name('login.post');
+
+        // Dashboard (auth)
+        Route::middleware('auth')->group(function () {
+            Route::get('/dashboard', [GuardianController::class, 'dashboard'])->name('dashboard');
+        });
+    });
+
+    
+use App\Http\Controllers\MasterDataController;
+
+// ─────────────────────────────────────────────────────────────────
+// MASTER DATA — semua tab dalam satu prefix
+// URL: /master-data, /master-data?tab=kelas, dst.
+// ─────────────────────────────────────────────────────────────────
+Route::prefix('master-data')
+    ->name('master-data.')
+    ->group(function () {
+        // ── Halaman utama (index dengan tab) ──────────────────────
+        Route::get('/', [MasterDataController::class, 'index'])->name('index');
+
+        // ── KELAS ─────────────────────────────────────────────────
+        Route::post('/kelas', [MasterDataController::class, 'storeKelas'])->name('kelas.store');
+        Route::put('/kelas/{kelas}', [MasterDataController::class, 'updateKelas'])->name('kelas.update');
+        Route::delete('/kelas/{kelas}', [MasterDataController::class, 'destroyKelas'])->name('kelas.destroy');
+        Route::patch('/kelas/{kelas}/toggle', [MasterDataController::class, 'toggleKelas'])->name('kelas.toggle');
+        Route::post('/kelas/reorder', [MasterDataController::class, 'reorderKelas'])->name('kelas.reorder');
+
+        // ── BIDANG ILMU ───────────────────────────────────────────
+        Route::post('/bidang-ilmu', [MasterDataController::class, 'storeBidangIlmu'])->name('bidang-ilmu.store');
+        Route::put('/bidang-ilmu/{bidangIlmu}', [MasterDataController::class, 'updateBidangIlmu'])->name('bidang-ilmu.update');
+        Route::delete('/bidang-ilmu/{bidangIlmu}', [MasterDataController::class, 'destroyBidangIlmu'])->name('bidang-ilmu.destroy');
+        Route::patch('/bidang-ilmu/{bidangIlmu}/toggle', [MasterDataController::class, 'toggleBidangIlmu'])->name('bidang-ilmu.toggle');
+        Route::post('/bidang-ilmu/reorder', [MasterDataController::class, 'reorderBidangIlmu'])->name('bidang-ilmu.reorder');
+
+        // ── WAKTU PELAJARAN ───────────────────────────────────────
+        Route::post('/waktu-pelajaran', [MasterDataController::class, 'storeWaktuPelajaran'])->name('waktu-pelajaran.store');
+        Route::put('/waktu-pelajaran/{waktuPelajaran}', [MasterDataController::class, 'updateWaktuPelajaran'])->name('waktu-pelajaran.update');
+        Route::delete('/waktu-pelajaran/{waktuPelajaran}', [MasterDataController::class, 'destroyWaktuPelajaran'])->name('waktu-pelajaran.destroy');
+        Route::patch('/waktu-pelajaran/{waktuPelajaran}/toggle', [MasterDataController::class, 'toggleWaktuPelajaran'])->name('waktu-pelajaran.toggle');
+        Route::post('/waktu-pelajaran/reorder', [MasterDataController::class, 'reorderWaktuPelajaran'])->name('waktu-pelajaran.reorder');
+
+        // ── KATEGORI BERITA ───────────────────────────────────────
+        Route::post('/kategori-berita', [MasterDataController::class, 'storeKategoriBerita'])->name('kategori-berita.store');
+        Route::put('/kategori-berita/{kategoriBerita}', [MasterDataController::class, 'updateKategoriBerita'])->name('kategori-berita.update');
+        Route::delete('/kategori-berita/{kategoriBerita}', [MasterDataController::class, 'destroyKategoriBerita'])->name('kategori-berita.destroy');
+        Route::patch('/kategori-berita/{kategoriBerita}/toggle', [MasterDataController::class, 'toggleKategoriBerita'])->name('kategori-berita.toggle');
+        Route::post('/kategori-berita/reorder', [MasterDataController::class, 'reorderKategoriBerita'])->name('kategori-berita.reorder');
+    });

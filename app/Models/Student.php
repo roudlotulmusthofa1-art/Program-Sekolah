@@ -25,14 +25,14 @@ class Student extends Model
         return $this->belongsTo(SchoolClass::class, 'school_class_id');
     }
 
-    public function guardian(): BelongsTo
+    public function guardian()
     {
         return $this->belongsTo(Guardian::class, 'guardian_id');
     }
 
     public function pendaftaran()
     {
-        return $this->belongsTo(PendaftaranSiswa::class, 'pendaftaran_id');
+        return $this->belongsTo(PendaftaranSiswa::class, 'pendaftaran_id')->withTrashed();
     }
 
     // ── Accessor: URL foto (pakai default jika kosong) ────────────────────

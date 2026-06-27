@@ -34,7 +34,9 @@ use App\Models\Teacher;
 use App\Models\Tagihan;
 use App\Models\schoolClass;
 use App\Models\Pembayaran;
+use App\Models\guardian;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\auth;
 
 class DashboardController extends Controller
 {
@@ -44,67 +46,52 @@ class DashboardController extends Controller
     public function index()
     {
         // ── Statistik Utama ──────────────────────────────────────────────
-        $totalSantri    = Student::where('status', 'aktif')->count();
-        $totalUstadz    = Teacher::where('status', 'aktif')->count();
+        $totalSantri = Student::where('status', 'aktif')->count();
+        $totalUstadz = Teacher::where('status', 'aktif')->count();
 
         $santriBaruBulanIni = Student::whereMonth('created_at', Carbon::now()->month)
-                                    ->whereYear('created_at', Carbon::now()->year)
-                                    ->count();
+            ->whereYear('created_at', Carbon::now()->year)
+            ->count();
 
         $tagihanPending = Tagihan::where('status', 'belum_bayar')->count();
 
-    //     // ── Progress Akademik Per Kelas ──────────────────────────────────
+        //     // ── Progress Akademik Per Kelas ──────────────────────────────────
         $kelasList = SchoolClass::withCount('students')
-                        //   ->with(['nilaiRataRata'])
-                          ->orderBy('nama_kelas')
-                          ->get()
-                          ->map(function ($kelas) {
-                              return [
-                                  'nama'         => $kelas->nama_kelas,
-                                  'jumlah_santri'=> $kelas->santri_count,
-                                  'progress'     => $kelas->progress_akademik ?? 0,
-                              ];
-                          });
+            //   ->with(['nilaiRataRata'])
+            ->orderBy('nama_kelas')
+            ->get()
+            ->map(function ($kelas) {
+                return [
+                    'nama' => $kelas->nama_kelas,
+                    'jumlah_santri' => $kelas->santri_count,
+                    'progress' => $kelas->progress_akademik ?? 0,
+                ];
+            });
 
-    //     // ── Status Keuangan ──────────────────────────────────────────────
+        //     // ── Status Keuangan ──────────────────────────────────────────────
         $bulanIni = Carbon::now();
 
-        $pembayaranBulanIni = Pembayaran::whereMonth('tanggal_bayar', $bulanIni->month)
-                                        ->whereYear('tanggal_bayar', $bulanIni->year)
-                                        ->sum('jumlah_bayar');
+        $pembayaranBulanIni = Pembayaran::whereMonth('tanggal_bayar', $bulanIni->month)->whereYear('tanggal_bayar', $bulanIni->year)->sum('jumlah_bayar');
 
-        $tunggakan = Tagihan::where('status', 'belum_bayar')
-                            ->where('jatuh_tempo', '<', Carbon::now())
-                            ->sum('jumlah');
+        $tunggakan = Tagihan::where('status', 'belum_bayar')->where('jatuh_tempo', '<', Carbon::now())->sum('jumlah');
 
         // ── Waktu Sholat (data statis / bisa diganti dengan API Aladhan) ─
         $waktuSholat = $this->getWaktuSholat();
 
-    //     // ── Kalender ────────────────────────────────────────────────────
+        //     // ── Kalender ────────────────────────────────────────────────────
         $kalender = [
-            'masehi'   => Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY'),
+            'masehi' => Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY'),
             'hijriyah' => $this->getHijriyah(),
         ];
 
         // ── Data untuk grafik (opsional) ─────────────────────────────────
         $chartData = $this->getChartData();
 
-        return view('dashboard.index', compact(
-            'totalSantri',
-            'totalUstadz',
-            'santriBaruBulanIni',
-            'tagihanPending',
-            'kelasList',
-            'pembayaranBulanIni',
-            'tunggakan',
-            'waktuSholat',
-            'kalender',
-            'chartData'
-        ));
-    // }
+        return view('dashboard.index', compact('totalSantri', 'totalUstadz', 'santriBaruBulanIni', 'tagihanPending', 'kelasList', 'pembayaranBulanIni', 'tunggakan', 'waktuSholat', 'kalender', 'chartData'));
+        // }
 
-    // public function index()
-    // {
+        // public function index()
+        // {
         $kalender = [
             'masehi' => Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY'),
             'hijriyah' => $this->getHijriyah(),
@@ -159,5 +146,14 @@ class DashboardController extends Controller
             ];
         }
         return $bulan;
+    }
+
+    public function dashboard()
+    {
+        $user = Auth::user();
+
+        $guardian = Guardian::where('user_id', $user->id)->with('students.pendaftaran')->first();
+
+        return view('guardians.index', compact('guardian'));
     }
 }

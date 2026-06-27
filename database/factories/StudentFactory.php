@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Student;
+use App\Models\pendaftaranSiswa;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -42,7 +43,7 @@ class StudentFactory extends Factory
 
             'entry_date' => now(),
 
-            'status' => 'aktif',
+           'status' => fake()->randomElement(array_keys(PendaftaranSiswa::STATUS_LABELS)),
 
             'has_fee_scheme' => fake()->boolean(),
         ];

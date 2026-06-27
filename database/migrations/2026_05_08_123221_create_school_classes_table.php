@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->string('nama_kelas');
             $table->string('slug')->unique();
+             $table->string('kategori', 50)->default('Akademik');
             $table->string('color', 20)->default('#3b82f6');
             $table->integer('order')->default(0);
             $table->boolean('is_active')->default(true);
@@ -20,6 +21,8 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('school_classes');
+       Schema::table('school_classes', function (Blueprint $table) {
+            $table->dropColumn('kategori');
+        });
     }
 };

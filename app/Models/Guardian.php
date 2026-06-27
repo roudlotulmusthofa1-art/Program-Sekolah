@@ -14,7 +14,13 @@ class Guardian extends Model
         return $this->belongsTo(User::class);
     }
 
-    protected $fillable = ['user_id', 'guardian_name', 'whatsapp', 'email', 'adress'];
+   protected $fillable = [
+    'user_id',
+    'guardian_name',
+    'whatsapp',
+    'email',
+    'password',
+];
 
     // protected $hidden = ['password'];
 

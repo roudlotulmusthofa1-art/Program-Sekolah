@@ -178,7 +178,7 @@
             </div>
 
             {{-- ── Tabel Siswa ────────────────────────────────────────────────── --}}
-            <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden fade-in">
+            <div class="bg-white rounded-2xl border border-gray-100 fade-in">
 
                 {{-- Search + Filter Bar --}}
                 <div class="px-5 py-4 border-b border-gray-100 flex flex-col sm:flex-row gap-3">
@@ -198,42 +198,87 @@
                         </div>
 
                         {{-- Filter Dropdown --}}
-                        <div class="relative" x-data="{ open: false }">
-                            <button type="button" @click="open = !open"
-                                class="flex items-center gap-2 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl
-                               text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors">
-                                <i data-lucide="filter" class="w-4 h-4"></i>
-                                Filter
-                                <i data-lucide="chevron-down" class="w-3 h-3"></i>
-                            </button>
-                            <div x-show="open" @click.outside="open = false" x-cloak
-                                class="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-lg z-10 p-2">
-                                <p class="text-xs font-semibold text-gray-400 px-2 py-1 uppercase tracking-wider">Status</p>
-                                @foreach (['aktif' => 'Aktif', 'nonaktif' => 'Non-Aktif', 'alumni' => 'Alumni', 'keluar' => 'Keluar'] as $val => $label)
-                                    <a href="{{ route('students.index', array_merge(['status' => $val, 'search' => request('search')], $selectedClass ? ['class' => $selectedClass->slug] : [])) }}"
-                                        class="flex items-center gap-2 px-2 py-1.5 text-sm rounded-lg hover:bg-gray-50
-                              {{ request('status') === $val ? 'text-ribath-primary font-semibold' : 'text-gray-700' }}">
-                                        <span
-                                            class="w-2 h-2 rounded-full
-                            {{ $val === 'aktif'
-                                ? 'bg-green-500'
-                                : ($val === 'nonaktif'
-                                    ? 'bg-gray-400'
-                                    : ($val === 'alumni'
-                                        ? 'bg-blue-500'
-                                        : 'bg-red-500')) }}">
-                                        </span>
-                                        {{ $label }}
-                                    </a>
-                                @endforeach
-                                @if (request('status'))
-                                    <a href="{{ route('students.index', $selectedClass ? ['class' => $selectedClass->slug] : []) }}"
-                                        class="block px-2 py-1.5 text-xs text-gray-400 hover:text-red-500 mt-1 border-t border-gray-100 pt-2">
-                                        Hapus filter
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
+                       {{-- Filter Dropdown --}}
+<div class="relative" x-data="{ open: false }">
+    <button type="button" @click="open = !open"
+        class="flex items-center gap-2 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl
+               text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors">
+        <i data-lucide="filter" class="w-4 h-4"></i>
+        Filter
+        <i data-lucide="chevron-up" class="w-3 h-3" x-show="open"></i>
+        <i data-lucide="chevron-down" class="w-3 h-3" x-show="!open"></i>
+    </button>
+
+    {{-- Panel filter expanded --}}
+    <div x-show="open" @click.outside="open = false" x-cloak
+        class="absolute right-0 mt-2 w-max bg-white border border-gray-100 rounded-xl shadow-lg z-10 p-4">
+
+        <div class="grid grid-cols-4 gap-4">
+
+            {{-- Kelas --}}
+            <div>
+                <label class="block text-xs font-semibold text-ribath-primary mb-1.5">Kelas</label>
+                <select name="class"
+                    class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg
+                           focus:outline-none focus:ring-2 focus:ring-ribath-primary/20 focus:border-ribath-primary">
+                    <option value="">All</option>
+                    @foreach ($classes as $class)
+                        <option value="{{ $class->slug }}"
+                            {{ request('class') === $class->slug ? 'selected' : '' }}>
+                            {{ $class->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Status --}}
+            <div>
+                <label class="block text-xs font-semibold text-ribath-primary mb-1.5">Status</label>
+                <select name="status"
+                    class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg
+                           focus:outline-none focus:ring-2 focus:ring-ribath-primary/20 focus:border-ribath-primary">
+                    <option value="">All</option>
+                    @foreach (['aktif' => 'Aktif', 'lulus' => 'Lulus', 'pindah' => 'Pindah', 'keluar/alumni' => 'Keluar (Alumni)'] as $val => $label)
+                        <option value="{{ $val }}" {{ request('status') === $val ? 'selected' : '' }}>
+                            {{ $label }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Tanggal Masuk Dari --}}
+            <div>
+                <label class="block text-xs font-semibold text-ribath-primary mb-1.5">Tanggal Masuk Dari</label>
+                <input type="date" name="date_from" value="{{ request('date_from') }}"
+                    class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg
+                           focus:outline-none focus:ring-2 focus:ring-ribath-primary/20 focus:border-ribath-primary">
+            </div>
+
+            {{-- Tanggal Masuk Sampai --}}
+            <div>
+                <label class="block text-xs font-semibold text-ribath-primary mb-1.5">Tanggal Masuk Sampai</label>
+                <input type="date" name="date_to" value="{{ request('date_to') }}"
+                    class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg
+                           focus:outline-none focus:ring-2 focus:ring-ribath-primary/20 focus:border-ribath-primary">
+            </div>
+
+        </div>
+
+        {{-- Tombol aksi --}}
+        <div class="flex justify-end gap-2 mt-4 pt-3 border-t border-gray-100">
+            @if(request()->hasAny(['status', 'class', 'date_from', 'date_to']))
+                <a href="{{ route('students.index', $selectedClass ? ['class' => $selectedClass->slug] : []) }}"
+                    class="px-4 py-2 text-xs text-gray-500 hover:text-red-500 border border-gray-200 rounded-lg transition-colors">
+                    Hapus Filter
+                </a>
+            @endif
+            <button type="submit"
+                class="px-4 py-2 bg-ribath-primary text-white rounded-lg text-xs font-medium hover:bg-ribath-dark transition-colors">
+                Terapkan Filter
+            </button>
+        </div>
+    </div>
+</div>
 
                         <button type="submit"
                             class="px-4 py-2.5 bg-ribath-primary text-white rounded-xl text-sm font-medium hover:bg-ribath-dark transition-colors">

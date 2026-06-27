@@ -12,13 +12,8 @@ return new class extends Migration {
     {
         Schema::create('guardians', function (Blueprint $table) {
             $table->id();
+            // $table->foreignId('student_id')->constrained('students')->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            // // DATA CALON SANTRI
-            // $table->string('student_name');
-            // $table->string('birth_place');
-            // $table->date('birth_date');
-            // $table->enum('gender', ['Laki-laki', 'Perempuan']);
-            // $table->string('program');
 
             // DATA ORANG TUA / WALI
             $table->string('guardian_name');
@@ -27,10 +22,10 @@ return new class extends Migration {
             $table->text('address')->nullable();
 
             // SUMBER INFORMASI
-            // $table->string('information_source')->nullable();
+            $table->string('information_source')->nullable();
 
             // password
-            // $table->string('password');
+            $table->string('password');
 
             $table->timestamps();
         });

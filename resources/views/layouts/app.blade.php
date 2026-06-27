@@ -116,8 +116,8 @@
             'icon' => 'user-plus',
             'route' => 'psb',
             'children' => [
-                ['name' => 'Pendaftar', 'route' => 'psb.pendaftar', 'icon' => 'user'],
-                ['name' => 'Seleksi', 'route' => 'psb.seleksi', 'icon' => 'check-circle'],
+                ['name' => 'Pendaftaran Masuk', 'route' => 'psb.pendaftaran.index', 'icon' => 'clipboard-list'],
+                ['name' => 'Priode Psb', 'route' => 'psb.seleksi', 'icon' => 'check-circle'],
             ],
         ],
         [
@@ -137,12 +137,16 @@
             'icon' => 'settings',
             'route' => 'sistem',
             'children' => [
-                ['name' => 'Pengaturan', 'route' => 'sistem.pengaturan', 'icon' => 'settings'],
-                ['name' => 'Pengguna', 'route' => 'sistem.pengguna', 'icon' => 'user'],
+                ['name' => 'Kelola Permission', 'route' => 'sistem.kelola-permission', 'icon' => 'shield],
+                ['name' => 'User per Role', 'route' => 'sistem.user-per-role', 'icon' => 'user-round'],
+                ['name' => 'Master Data', 'route' => 'sistem.master-data', 'icon' => 'database'],
+                ['name' => 'pengaturan', 'route' => 'sistem.pengaturan', 'icon' => 'setting'],
             ],
         ],
     ];
-@endphp
+
+
+@endph
 
 <body class="bg-gray-50 text-gray-800" x-data="{
     sidebarOpen: localStorage.getItem('sidebarOpen') === 'false' ? false : true,

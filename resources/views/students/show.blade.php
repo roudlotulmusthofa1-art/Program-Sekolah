@@ -319,7 +319,7 @@
 
             {{-- Foto --}}
             <div class="bg-white rounded-2xl p-4 mb-4 border border-teal-50 shadow-sm text-center">
-                @if($student->pendaftaran->photo)
+                @if($student->photo)
                     <img src="{{ asset('storage/' . $student->pendaftaran->photo) }}"
                          alt="Foto {{ $student->pendaftaran->name }}"
                          class="w-20 h-20 rounded-xl object-cover mx-auto mb-3 ring-2 ring-teal-200">
@@ -584,7 +584,7 @@
                             <span class="field-label">Alamat Ortu</span>
                             <span class="field-value {{ !$student->pendaftaran?->parent_address ? 'empty' : '' }}"
                                   style="text-align:right;max-width:340px;">
-                                {{ $pendaftaran->parent_address ?? '-' }}
+                                {{ $student->pendaftaran?->parent_address ?? '-' }}
                             </span>
                         </div>
                         <div class="field-item">
@@ -885,7 +885,7 @@
                 @if($student->pendaftaran?->alasan)
                     <div class="bg-teal-50 border-l-4 border-teal-500 rounded-xl p-5">
                         <p class="text-gray-700 text-sm leading-relaxed italic">
-                            "{{ $pendaftaran->alasan }}"
+                            "{{ $student->pendaftaran?->alasan }}"
                         </p>
                     </div>
                 @else

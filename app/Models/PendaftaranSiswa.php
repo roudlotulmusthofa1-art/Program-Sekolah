@@ -129,6 +129,7 @@ class PendaftaranSiswa extends Model
         'dalam_proses' => 'Dalam Proses',
         'diterima' => 'Diterima',
         'ditolak' => 'Ditolak',
+       
     ];
     const STATUS_COLORS = [
         'pending' => 'yellow',
@@ -137,13 +138,13 @@ class PendaftaranSiswa extends Model
         'dalam_proses' => 'purple',
         'diterima' => 'green',
         'ditolak' => 'red',
+      
     ];
-    const STATUS_DRAFT = 'draft';
-    const STATUS_SUBMITTED = 'submitted';
-    const STATUS_REVIEWED = 'reviewed';
-    const STATUS_ACCEPTED = 'accepted';
-    const STATUS_REJECTED = 'rejected';
 
+    const STATUS_SUBMITTED = 'pending';
+    const STATUS_ACCEPTED = 'diterima';
+    const STATUS_DRAFT = 'draft';
+    
     const INCOME_OPTIONS = [
         '<1jt' => 'Kurang dari Rp 1.000.000',
         '1-3jt' => 'Rp 1.000.000 - Rp 3.000.000',
@@ -265,82 +266,85 @@ class PendaftaranSiswa extends Model
     }
 
     // ─── Scopes ───────────────────────────────────────────────────
-    public function scopeActive($q)    { return $q->where('is_archived', false); }
-    public function scopeArchived($q)  { return $q->where('is_archived', true); }
-    public function scopeStatus($q, $s){ return $q->where('status', $s); }
-
+    public function scopeActive($q)
+    {
+        return $q->where('is_archived', false);
+    }
+    public function scopeArchived($q)
+    {
+        return $q->where('is_archived', true);
+    }
+    public function scopeStatus($q, $s)
+    {
+        return $q->where('status', $s);
+    }
 
     // ─── Auto-generate nomor pendaftaran ─────────────────────────
     protected static function booted(): void
     {
         static::creating(function (PendaftaranSiswa $p) {
             if (empty($p->no_pendaftaran)) {
-                $year  = now()->year;
-                $last  = static::whereYear('created_at', $year)->max('id') ?? 0;
+                $year = now()->year;
+                $last = static::whereYear('created_at', $year)->max('id') ?? 0;
                 $p->no_pendaftaran = 'PSB-' . $year . '-' . str_pad($last + 1, 5, '0', STR_PAD_LEFT);
             }
             if (empty($p->tanggal_daftar)) {
-                $p->tanggal_daftar = now()->toDateString();
+                $p->tanggal_daftar = Carbon::now();
             }
         });
     }
- 
-    
+
     // ─── Generate kode akses unik ─────────────────────────────────
     public static function generateKodeAkses(): string
     {
         do {
             $kode = strtoupper(Str::random(3)) . '-' . rand(1000, 9999);
         } while (static::where('kode_akses', $kode)->exists());
- 
+
         return $kode;
     }
- 
+
     // ─── Terima pendaftaran → buat Student ───────────────────────
-    public function terima(?int $schoolClassId = null): Student
+    public function terima(?int $schoolClassId = null)
     {
-        // Buat atau update Student
         $student = Student::updateOrCreate(
-            ['pendaftaran_id' => $this->id],
             [
-                'name'            => $this->nama_lengkap,
-                'guardian_id'     => $this->guardian_id,
-                'school_classes_id' => $schoolClassId ?? $this->school_classes_id,
-                'program'         => $this->program,
-                'status'          => 'active',
-                'tanggal_masuk'   => now()->toDateString(),
-            ]
+                'pendaftaran_id' => $this->id,
+            ],
+            [
+                'name' => $this->nama_lengkap,
+                'birth_place' => $this->tempat_lahir,
+                'birth_date' => $this->tanggal_lahir,
+                'gender' => $this->jenis_kelamin,
+                'address' => $this->alamat,
+                'phone' => $this->no_telepon,
+                'school_class_id' => $schoolClassId,
+                'status' => 'aktif',
+                'entry_date' => now(),
+            ],
         );
- 
-        // Buat kode akses untuk wali
-        $kode = self::generateKodeAkses();
- 
+
         $this->update([
-            'status'      => 'diterima',
-            'student_id'  => $student->id,
-            'kode_akses'  => $kode,
-            'diterima_at' => now()->toDateTimeString(),
-            'school_classes_id' => $schoolClassId ?? $this->school_classes_id,
+            'status' => 'diterima',
+            'kode_akses' => self::generateKodeAkses(),
+            'diterima_at' => now(),
         ]);
- 
+
         return $student;
     }
-
 
     public function guardian(): BelongsTo
     {
         return $this->belongsTo(Guardian::class);
     }
- 
+
     public function student(): HasOne
     {
         return $this->hasOne(Student::class, 'pendaftaran_id');
     }
- 
+
     public function schoolClass(): BelongsTo
     {
-        return $this->belongsTo(SchoolClass::class, 'school_classes_id');
+        return $this->belongsTo(SchoolClass::class, 'school_class_id');
     }
-
-
 }

@@ -35,53 +35,31 @@ class PendaftaranSiswaFactory extends Factory
 
             'parent_address' => fake()->address(),
 
-            'income' => fake()->randomElement([
-                '<1jt',
-                '1-3jt',
-                '3-5jt',
-                '5-10jt',
-                '>10jt'
-            ]),
+            'income' => fake()->randomElement(['<1jt', '1-3jt', '3-5jt', '5-10jt', '>10jt']),
 
             'school_name' => fake()->company(),
 
-            'education_level' => fake()->randomElement([
-                'SD / MI',
-                'SMP / MTs',
-                'SMA / MA',
-                'SMK'
-            ]),
+            'education_level' => fake()->randomElement(['SD / MI', 'SMP / MTs', 'SMA / MA', 'SMK']),
 
             'graduation_year' => fake()->year(),
 
-            'blood_type' => fake()->randomElement([
-                'A',
-                'B',
-                'AB',
-                'O'
-            ]),
+            'blood_type' => fake()->randomElement(['A', 'B', 'AB', 'O']),
 
-            'quran_reading_ability' => fake()->randomElement([
-                'belum_bisa',
-                'iqro',
-                'terbata',
-                'lancar',
-                'tartil'
-            ]),
+            'quran_reading_ability' => fake()->randomElement(['belum_bisa', 'iqro', 'terbata', 'lancar', 'tartil']),
 
             'memorized_juz' => fake()->numberBetween(0, 30),
 
-            'previous_pesantren' => fake()->randomElement([
-                'ya',
-                'tidak'
-            ]),
+            'previous_pesantren' => fake()->randomElement(['ya', 'tidak']),
 
             'agree_rules' => true,
             'agree_payment' => true,
             'agree_data_truth' => true,
 
-            'status' => 'accepted',
+            'status' => true,
             'last_step' => 9,
+            'no_pendaftaran' => 'PSB-2026-' . str_pad(fake()->unique()->numberBetween(1, 99999), 5, '0', STR_PAD_LEFT),
+
+            'tanggal_daftar' => now()->toDateString(),
         ];
     }
 }
