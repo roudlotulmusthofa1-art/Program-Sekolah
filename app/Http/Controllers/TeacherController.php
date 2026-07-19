@@ -16,7 +16,7 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
         Teacher::create([
-            'student_name' => $request->student_name,
+            'teacher_name' => $request->teacher_name,
             'birth_place' => $request->birth_place,
             'birth_date' => $request->birth_date,
             'gender' => $request->gender,

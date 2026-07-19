@@ -15,7 +15,7 @@ class Tagihan extends Model
     }
     public function student()
     {
-        return $this->belongsTo(Student::class, 'santri_id');
+        return $this->belongsTo(Student::class, 'student_id');
     }
 
 }

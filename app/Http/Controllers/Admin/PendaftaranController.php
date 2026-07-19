@@ -61,8 +61,8 @@ class PendaftaranController extends Controller
     }
 
     // ─── Update Status ────────────────────────────────────────────
-    public function updateStatus(Request $request, PendaftaranSiswa $pendaftaran )
-    {
+   public function updateStatus(Request $request, PendaftaranSiswa $pendaftaran)
+{
     $request->validate([
         'status' => 'required|in:draft,review,diterima,ditolak'
     ]);
@@ -72,34 +72,37 @@ class PendaftaranController extends Controller
         'status' => $request->status
     ]);
 
-    // Kalau diterima → buat student
-    if ($request->status === 'diterima') {
+    // Kalau diterima → buat atau sync data student
+   if ($request->status === 'diterima') {
+    $student = Student::where('pendaftaran_id', $pendaftaran->id)->first();
 
-        // Cek apakah sudah pernah dibuat
-        $student = Student::where('pendaftaran_id', $pendaftaran->id)->first();
+    $data = [
+        'registration_code' => $pendaftaran->kode_akses,
+        'guardian_id'       => $pendaftaran->guardian_id ?? null,
+        'nis'               => request('nis') ?? null,
+        'name'              => $pendaftaran->nama_lengkap,
+        'birth_place'       => $pendaftaran->tempat_lahir,
+        'birth_date'        => $pendaftaran->tanggal_lahir,
+        'gender'            => $pendaftaran->jenis_kelamin,
+        'address'           => $pendaftaran->alamat,
+        'phone'             => $pendaftaran->no_hp,
+        'photo'             => $pendaftaran->photo,
+        'status'            => 'aktif',
+        'has_fee_scheme'    => false,
+    ];
 
-        if (!$student) {
-            Student::create([
-                'registration_code' => $pendaftaran->registration_code,
-                'pendaftaran_id'    => $pendaftaran->id,
-                'guardian_id'       => $pendaftaran->guardian_id ?? null,
-                'nis'               => null,
-                'name'              => $pendaftaran->nama_lengkap,
-                'birth_place'       => $pendaftaran->tempat_lahir,
-                'birth_date'        => $pendaftaran->tanggal_lahir,
-                'gender'            => $pendaftaran->jenis_kelamin,
-                'address'           => $pendaftaran->alamat,
-                'phone'             => $pendaftaran->no_hp,
-                'photo'             => $pendaftaran->photo,
-                'entry_date'        => now(),
-                'status'            => 'aktif',
-                'has_fee_scheme'    => false,
-            ]);
-        }
+    if (!$student) {
+        $data['entry_date'] = now();
     }
+
+    Student::updateOrCreate(
+        ['pendaftaran_id' => $pendaftaran->id],
+        $data
+    );
+}
 
     return back()->with('success', 'Status berhasil diperbarui');
-    }
+}
 
     // ─── Terima → buat Student ────────────────────────────────────
     public function terima(Request $request, PendaftaranSiswa $pendaftaran)

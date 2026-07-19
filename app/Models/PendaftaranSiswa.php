@@ -305,33 +305,42 @@ class PendaftaranSiswa extends Model
     }
 
     // ─── Terima pendaftaran → buat Student ───────────────────────
-    public function terima(?int $schoolClassId = null)
-    {
-        $student = Student::updateOrCreate(
-            [
-                'pendaftaran_id' => $this->id,
-            ],
-            [
-                'name' => $this->nama_lengkap,
-                'birth_place' => $this->tempat_lahir,
-                'birth_date' => $this->tanggal_lahir,
-                'gender' => $this->jenis_kelamin,
-                'address' => $this->alamat,
-                'phone' => $this->no_telepon,
-                'school_class_id' => $schoolClassId,
-                'status' => 'aktif',
-                'entry_date' => now(),
-            ],
-        );
+   public function terima(?int $schoolClassId = null)
+{
+    $kodeAkses = $this->kode_akses ?: self::generateKodeAkses();
 
-        $this->update([
-            'status' => 'diterima',
-            'kode_akses' => self::generateKodeAkses(),
-            'diterima_at' => now(),
-        ]);
+    // Cek apakah student sudah punya NIS (kalau updateOrCreate dipanggil ulang, jangan generate NIS baru)
+    $existingStudent = Student::where('pendaftaran_id', $this->id)->first();
+    $nis = $existingStudent->nis ?? Student::generateNis();
 
-        return $student;
-    }
+    $student = Student::updateOrCreate(
+        [
+            'pendaftaran_id' => $this->id,
+        ],
+        [
+            'registration_code' => $kodeAkses,
+            'guardian_id'       => $this->guardian_id ?? null,
+            'nis'               => $nis,
+            'name'              => $this->nama_lengkap,
+            'birth_place'       => $this->tempat_lahir,
+            'birth_date'        => $this->tanggal_lahir,
+            'gender'            => $this->jenis_kelamin,
+            'address'           => $this->alamat,
+            'phone'             => $this->no_telepon,
+            'school_class_id'   => $schoolClassId,
+            'status'            => 'aktif',
+            'entry_date'        => now(),
+        ],
+    );
+
+    $this->update([
+        'status'      => 'diterima',
+        'kode_akses'  => $kodeAkses,
+        'diterima_at' => now(),
+    ]);
+
+    return $student;
+}
 
     public function guardian(): BelongsTo
     {

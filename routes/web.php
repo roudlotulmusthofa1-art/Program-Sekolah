@@ -95,6 +95,27 @@ Route::prefix('register')->group(function () {
     Route::resource('teachers', TeacherController::class);
 });
 
+// data guru
+use App\Http\Controllers\Admin\AdminUstadzController;
+// --aktifkan route ini jika sudah punya sistem login dan punya akses admin
+
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('ustadz', [AdminUstadzController::class, 'index'])->name('ustadz.index');
+//     Route::post('ustadz', [AdminUstadzController::class, 'store'])->name('ustadz.store');
+//     Route::put('ustadz/{teacher}', [AdminUstadzController::class, 'update'])->name('ustadz.update');
+//     Route::delete('ustadz/{teacher}', [AdminUstadzController::class, 'destroy'])->name('ustadz.destroy');
+//     Route::patch('ustadz/{teacher}/status', [AdminUstadzController::class, 'updateStatus'])->name('ustadz.updateStatus');
+//     Route::post('ustadz/{teacher}/give-access', [AdminUstadzController::class, 'giveAccess'])->name('ustadz.giveAccess');
+// });
+
+Route::get('ustadz', [AdminUstadzController::class, 'index'])->name('ustadz.index');
+Route::post('ustadz', [AdminUstadzController::class, 'store'])->name('ustadz.store');
+Route::put('ustadz/{teacher}', [AdminUstadzController::class, 'update'])->name('ustadz.update');
+Route::delete('ustadz/{teacher}', [AdminUstadzController::class, 'destroy'])->name('ustadz.destroy');
+Route::patch('ustadz/{teacher}/status', [AdminUstadzController::class, 'updateStatus'])->name('ustadz.updateStatus');
+Route::post('ustadz/{teacher}/give-access', [AdminUstadzController::class, 'giveAccess'])->name('ustadz.giveAccess');
+//
+
 // VIEW INPUT WALI MURID
 use App\Http\Controllers\GuardianController;
 
@@ -159,10 +180,10 @@ Route::prefix('pendaftaransiswa')->group(function () {
 
 // dashboard
 
-use App\Http\Controllers\ManajemenDataController;
-use App\Http\Controllers\AkademikController;
-use App\Http\Controllers\KeuanganController;
-use App\Http\Controllers\LaporanController;
+// use App\Http\Controllers\ManajemenDataController;
+// use App\Http\Controllers\AkademikController;
+// use App\Http\Controllers\KeuanganController;
+// use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PSBController;
 use App\Http\Controllers\StudentController;
 
@@ -177,6 +198,25 @@ use App\Http\Controllers\StudentController;
 // Dashboard Utama
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+use App\Http\Controllers\Admin\TahunAjaranController;
+
+// Route::middleware(['auth'])->group(function () {
+Route::get('tahun-ajaran', [TahunAjaranController::class, 'index'])->name('tahun-ajaran.index');
+Route::post('tahun-ajaran', [TahunAjaranController::class, 'store'])->name('tahun-ajaran.store');
+Route::put('tahun-ajaran/{tahunAjaran}', [TahunAjaranController::class, 'update'])->name('tahun-ajaran.update');
+Route::delete('tahun-ajaran/{tahunAjaran}', [TahunAjaranController::class, 'destroy'])->name('tahun-ajaran.destroy');
+Route::patch('tahun-ajaran/{tahunAjaran}/toggle-status', [TahunAjaranController::class, 'toggleStatus'])->name('tahun-ajaran.toggle-status');
+// });
+
+// route untuk kurikulum (kitab)
+
+use App\Http\Controllers\Admin\AdminKitabController;
+
+Route::get('kurikulum-kitab', [AdminKitabController::class, 'index'])->name('kurikulum.index');
+Route::post('kurikulum-kitab', [AdminKitabController::class, 'store'])->name('kurikulum.store');
+Route::put('kurikulum-kitab/{kitab}', [AdminKitabController::class, 'update'])->name('kurikulum.update');
+Route::delete('kurikulum-kitab/{kitab}', [AdminKitabController::class, 'destroy'])->name('kurikulum.destroy');
 
 // Manajemen Data
 Route::prefix('manajemen-data')
@@ -199,23 +239,11 @@ Route::prefix('akademik')
         Route::post('/tahfidz/input', [AkademikController::class, 'inputTahfidz'])->name('tahfidz.input');
     });
 
-// Keuangan
-Route::prefix('keuangan')
-    ->name('keuangan.')
-    ->group(function () {
-        Route::get('/tagihan', [KeuanganController::class, 'tagihan'])->name('tagihan');
-        Route::get('/pembayaran', [KeuanganController::class, 'pembayaran'])->name('pembayaran');
-        Route::get('/tunggakan', [KeuanganController::class, 'tunggakan'])->name('tunggakan');
-    });
+// biaya pendidikan
+use App\Http\Controllers\Admin\BiayaPendidikanController;
 
-// Laporan
-Route::prefix('laporan')
-    ->name('laporan.')
-    ->group(function () {
-        Route::get('/akademik', [LaporanController::class, 'akademik'])->name('akademik');
-        Route::get('/keuangan', [LaporanController::class, 'keuangan'])->name('keuangan');
-        Route::get('/kehadiran', [LaporanController::class, 'kehadiran'])->name('kehadiran');
-    });
+Route::get('biaya-pendidikan', [BiayaPendidikanController::class, 'index'])->name('biaya-pendidikan.index');
+Route::post('/biaya-pendidikan', [BiayaPendidikanController::class, 'store'])->name('biaya-pendidikan.store');
 
 // PSB (Penerimaan Santri Baru)
 Route::prefix('psb')
@@ -337,7 +365,6 @@ Route::prefix('wali')
         });
     });
 
-    
 use App\Http\Controllers\MasterDataController;
 
 // ─────────────────────────────────────────────────────────────────
@@ -350,31 +377,45 @@ Route::prefix('master-data')
         // ── Halaman utama (index dengan tab) ──────────────────────
         Route::get('/', [MasterDataController::class, 'index'])->name('index');
 
-        // ── KELAS ─────────────────────────────────────────────────
+        // ── KELAS ──────────────────────────────────────────────────────
+        Route::post('/kelas/reorder', [MasterDataController::class, 'reorderKelas'])->name('kelas.reorder');
         Route::post('/kelas', [MasterDataController::class, 'storeKelas'])->name('kelas.store');
         Route::put('/kelas/{kelas}', [MasterDataController::class, 'updateKelas'])->name('kelas.update');
         Route::delete('/kelas/{kelas}', [MasterDataController::class, 'destroyKelas'])->name('kelas.destroy');
         Route::patch('/kelas/{kelas}/toggle', [MasterDataController::class, 'toggleKelas'])->name('kelas.toggle');
-        Route::post('/kelas/reorder', [MasterDataController::class, 'reorderKelas'])->name('kelas.reorder');
 
-        // ── BIDANG ILMU ───────────────────────────────────────────
+        // ── BIDANG ILMU ────────────────────────────────────────────────
+        Route::post('/bidang-ilmu/reorder', [MasterDataController::class, 'reorderBidangIlmu'])->name('bidang-ilmu.reorder');
         Route::post('/bidang-ilmu', [MasterDataController::class, 'storeBidangIlmu'])->name('bidang-ilmu.store');
         Route::put('/bidang-ilmu/{bidangIlmu}', [MasterDataController::class, 'updateBidangIlmu'])->name('bidang-ilmu.update');
         Route::delete('/bidang-ilmu/{bidangIlmu}', [MasterDataController::class, 'destroyBidangIlmu'])->name('bidang-ilmu.destroy');
         Route::patch('/bidang-ilmu/{bidangIlmu}/toggle', [MasterDataController::class, 'toggleBidangIlmu'])->name('bidang-ilmu.toggle');
-        Route::post('/bidang-ilmu/reorder', [MasterDataController::class, 'reorderBidangIlmu'])->name('bidang-ilmu.reorder');
 
-        // ── WAKTU PELAJARAN ───────────────────────────────────────
+        // ── WAKTU PELAJARAN ────────────────────────────────────────────
+        Route::post('/waktu-pelajaran/reorder', [MasterDataController::class, 'reorderWaktuPelajaran'])->name('waktu-pelajaran.reorder');
         Route::post('/waktu-pelajaran', [MasterDataController::class, 'storeWaktuPelajaran'])->name('waktu-pelajaran.store');
         Route::put('/waktu-pelajaran/{waktuPelajaran}', [MasterDataController::class, 'updateWaktuPelajaran'])->name('waktu-pelajaran.update');
         Route::delete('/waktu-pelajaran/{waktuPelajaran}', [MasterDataController::class, 'destroyWaktuPelajaran'])->name('waktu-pelajaran.destroy');
         Route::patch('/waktu-pelajaran/{waktuPelajaran}/toggle', [MasterDataController::class, 'toggleWaktuPelajaran'])->name('waktu-pelajaran.toggle');
-        Route::post('/waktu-pelajaran/reorder', [MasterDataController::class, 'reorderWaktuPelajaran'])->name('waktu-pelajaran.reorder');
 
-        // ── KATEGORI BERITA ───────────────────────────────────────
+        // ── KATEGORI BERITA ────────────────────────────────────────────
+        Route::post('/kategori-berita/reorder', [MasterDataController::class, 'reorderKategoriBerita'])->name('kategori-berita.reorder');
         Route::post('/kategori-berita', [MasterDataController::class, 'storeKategoriBerita'])->name('kategori-berita.store');
         Route::put('/kategori-berita/{kategoriBerita}', [MasterDataController::class, 'updateKategoriBerita'])->name('kategori-berita.update');
         Route::delete('/kategori-berita/{kategoriBerita}', [MasterDataController::class, 'destroyKategoriBerita'])->name('kategori-berita.destroy');
         Route::patch('/kategori-berita/{kategoriBerita}/toggle', [MasterDataController::class, 'toggleKategoriBerita'])->name('kategori-berita.toggle');
-        Route::post('/kategori-berita/reorder', [MasterDataController::class, 'reorderKategoriBerita'])->name('kategori-berita.reorder');
     });
+
+// route yang menjadi PR
+Route::get('/coming-soon', function () {
+    return 'halaman masih proses di buat';
+})->name('coming-soon');
+
+// route untuk semua halaman yang belum di buat, dan dalam proses pembuatan,
+Route::get('/keuangan/tagihan', function () {
+    return 'Halaman Tagihan masih dalam pengembangan';
+})->name('keuangan.tagihan');
+
+Route::get('laporan/keuangan', function () {
+    return 'Halaman Laporan Keuangan masih dalam pengembangan';
+})->name('laporan.keuangan');

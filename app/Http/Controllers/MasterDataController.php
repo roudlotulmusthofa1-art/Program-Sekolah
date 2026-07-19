@@ -197,6 +197,7 @@ class MasterDataController extends Controller
         $data = $request->validate([
             'nama'        => 'required|string|max:100',
             'kode'        => 'nullable|string|max:20',
+            'jenis'       => 'required|in:sholat,jam_tetap',
             'jam_mulai'   => 'required|date_format:H:i',
             'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
         ]);
@@ -216,6 +217,7 @@ class MasterDataController extends Controller
         $data = $request->validate([
             'nama'        => 'required|string|max:100',
             'kode'        => 'nullable|string|max:20',
+            'jenis'       => 'required|in:sholat,jam_tetap',
             'jam_mulai'   => 'required|date_format:H:i',
             'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
         ]);

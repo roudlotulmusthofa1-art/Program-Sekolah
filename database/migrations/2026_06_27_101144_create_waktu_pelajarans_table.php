@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('kode', 20)->nullable();
+            $table->enum('jenis', ['sholat', 'jam_tetap'])->default('jam_tetap'); // ← langsung di sini, tanpa after()
             $table->time('jam_mulai');
             $table->time('jam_selesai');
             $table->integer('urutan')->default(0);

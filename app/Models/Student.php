@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 
 class Student extends Model
 {
@@ -19,18 +20,29 @@ class Student extends Model
         'has_fee_scheme' => 'boolean',
     ];
 
+    public static function generateNis(): string
+    {
+        return DB::transaction(function () {
+            $last = self::withTrashed()->lockForUpdate()->orderByRaw('CAST(nis AS UNSIGNED) DESC')->whereNotNull('nis')->value('nis');
+
+            $next = $last ? (int) $last + 1 : 1;
+
+            return str_pad($next, 4, '0', STR_PAD_LEFT);
+        });
+    }
+
     // ── Relasi ────────────────────────────────────────────────────────────
     public function schoolClass(): BelongsTo
     {
         return $this->belongsTo(SchoolClass::class, 'school_class_id');
     }
 
-    public function guardian()
+    public function guardian(): BelongsTo
     {
         return $this->belongsTo(Guardian::class, 'guardian_id');
     }
 
-    public function pendaftaran()
+    public function pendaftaran(): BelongsTo
     {
         return $this->belongsTo(PendaftaranSiswa::class, 'pendaftaran_id')->withTrashed();
     }
@@ -60,6 +72,6 @@ class Student extends Model
 
     public function tagihans()
     {
-        return $this->hasMany(Tagihan::class, 'santri_id');
+        return $this->hasMany(Tagihan::class, 'student_id');
     }
 }

@@ -3,61 +3,61 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pendaftaran;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Student;
 use App\Models\SchoolClass;
-use App\Models\guardian;
+use App\Models\Guardian;
+use App\Models\PendaftaranSiswa;
 
 class StudentController extends Controller
 {
-   public function index(Request $request)
-{
-    // Semua kelas untuk dropdown filter
-    $classes = SchoolClass::active()
-        ->withCount(['students as total_aktif' => fn($q) => $q->where('status', 'aktif')])
-        ->orderBy('nama_kelas')
-        ->get();
+    public function index(Request $request)
+    {
+        // Semua kelas untuk dropdown filter
+        $classes = SchoolClass::active()
+            ->withCount(['students as total_aktif' => fn($q) => $q->where('status', 'aktif')])
+            ->orderBy('nama_kelas')
+            ->get();
 
-    // Hitung siswa yang belum punya skema biaya
-    $studentsWithoutFee = Student::aktif()->where('has_fee_scheme', false)->count();
+        // Hitung siswa yang belum punya skema biaya
+        $studentsWithoutFee = Student::aktif()->where('has_fee_scheme', false)->count();
 
-    // Kelas yang dipilih via URL ?class=tamhidi
-    $selectedClass = null;
-    if ($request->filled('class')) {
-        $selectedClass = SchoolClass::where('slug', $request->class)->first();
+        // Kelas yang dipilih via URL ?class=tamhidi
+        $selectedClass = null;
+        if ($request->filled('class')) {
+            $selectedClass = SchoolClass::where('slug', $request->class)->first();
+        }
+
+        // Query utama
+        $query = Student::with(['schoolClass', 'guardian', 'pendaftaran']);
+
+        // Filter kelas
+        if ($selectedClass) {
+            $query->where('school_class_id', $selectedClass->id);
+        }
+
+        // Filter status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter tanggal masuk
+        if ($request->filled('date_from')) {
+            $query->whereDate('entry_date', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('entry_date', '<=', $request->date_to);
+        }
+
+        // Pencarian
+        if ($request->filled('search')) {
+            $query->search($request->search);
+        }
+
+        $students = $query->orderBy('name')->paginate(20)->withQueryString();
+
+        return view('students.index', compact('classes', 'studentsWithoutFee', 'selectedClass', 'students'));
     }
-
-    // Query utama
-    $query = Student::with(['schoolClass', 'guardian', 'pendaftaran']);
-
-    // Filter kelas
-    if ($selectedClass) {
-        $query->where('school_class_id', $selectedClass->id);
-    }
-
-    // Filter status
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
-    }
-
-    // Filter tanggal masuk
-    if ($request->filled('date_from')) {
-        $query->whereDate('entry_date', '>=', $request->date_from);
-    }
-    if ($request->filled('date_to')) {
-        $query->whereDate('entry_date', '<=', $request->date_to);
-    }
-
-    // Pencarian
-    if ($request->filled('search')) {
-        $query->search($request->search);
-    }
-
-    $students = $query->orderBy('name')->paginate(20)->withQueryString();
-
-    return view('students.index', compact('classes', 'studentsWithoutFee', 'selectedClass', 'students'));
-}
 
     // controler detail pendaftaran siswa
     public function show($pendaftaranId)
@@ -139,11 +139,12 @@ class StudentController extends Controller
             'phone' => 'nullable|string|max:20',
             'photo' => 'nullable|image|max:2048',
             'entry_date' => 'nullable|date',
-            'status' => 'required|in:aktif,nonaktif,alumni,keluar',
+            'status' => 'required|in:aktif,lulus,pindah,keluar/alumni',
             'guardian_id' => 'nullable|exists:guardians,id',
         ]);
 
         if ($request->hasFile('photo')) {
+            Storage::disk('public')->delete($student->photo);
             $validated['photo'] = $request->file('photo')->store('photos/students', 'public');
         }
 
@@ -176,30 +177,31 @@ class StudentController extends Controller
         return back()->with('success', count($request->ids) . ' data siswa berhasil dihapus.');
     }
 
-    public function updateStatus(Request $request, PendaftaranSiswa $pendaftaran)
-    {
-        $pendaftaran->update([
-            'status' => $request->status,
-        ]);
+    // public function updateStatus(Request $request, PendaftaranSiswa $pendaftaran)
+    // {
+    //     $pendaftaran->update([
+    //         'status' => $request->status,
+    //     ]);
 
-        if ($request->status === 'diterima') {
-            Student::create([
-                'registration_code' => $pendaftaran->registration_code,
-                'pendaftaran_id' => $pendaftaran->id,
-                'guardian_id' => $pendaftaran->guardian_id,
-                'name' => $pendaftaran->nama_lengkap,
-                'birth_place' => $pendaftaran->tempat_lahir,
-                'birth_date' => $pendaftaran->tanggal_lahir,
-                'gender' => $pendaftaran->jenis_kelamin,
-                'address' => $pendaftaran->alamat,
-                'phone' => $pendaftaran->no_hp,
-                'photo' => $pendaftaran->photo,
-                'entry_date' => now(),
-                'status' => 'aktif',
-                'has_fee_scheme' => false,
-            ]);
-        }
+        
+    //     if ($request->status === 'diterima') {
+    //         Student::create([
+    //             'registration_code' => $pendaftaran->kode_akses,
+    //             'pendaftaran_id' => $pendaftaran->id,
+    //             'guardian_id' => $pendaftaran->guardian_id,
+    //             'name' => $pendaftaran->nama_lengkap,
+    //             'birth_place' => $pendaftaran->tempat_lahir,
+    //             'birth_date' => $pendaftaran->tanggal_lahir,
+    //             'gender' => $pendaftaran->jenis_kelamin,
+    //             'address' => $pendaftaran->alamat,
+    //             'phone' => $pendaftaran->no_hp,
+    //             'photo' => $pendaftaran->photo,
+    //             'entry_date' => now(),
+    //             'status' => 'aktif',
+    //             'has_fee_scheme' => false,
+    //         ]);
+    //     }
 
-        return back();
-    }
+    //     return back();
+    // }
 }

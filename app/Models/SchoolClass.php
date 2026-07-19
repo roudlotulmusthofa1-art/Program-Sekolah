@@ -2,19 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class SchoolClass extends Model
 {
     use HasFactory;
+
     protected $fillable = ['nama_kelas', 'slug', 'kategori', 'color', 'order', 'is_active'];
 
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
     protected static function boot(): void
     {
         parent::boot();
@@ -28,7 +31,9 @@ class SchoolClass extends Model
             }
         });
     }
+
     // ── Relasi ───────────────────────────────────────────────────────────
+
     public function students(): HasMany
     {
         return $this->hasMany(Student::class, 'school_class_id');
@@ -39,15 +44,36 @@ class SchoolClass extends Model
         return $this->students()->count();
     }
 
+    public function waliKelas()
+    {
+        return $this->belongsTo(Teacher::class, 'wali_kelas_id');
+    }
+
+    public function teachers()
+    {
+        return $this->belongsToMany(Teacher::class, 'teacher_school_class')->withPivot('bidang_ilmu_id')->withTimestamps();
+    }
+
+    /**
+     * Semua kitab yang diajarkan di kelas ini, lengkap dengan
+     * semester & frekuensi/minggu masing-masing (lihat pivot).
+     */
+    public function kitabs(): BelongsToMany
+    {
+        return $this->belongsToMany(Kitab::class, 'kitab_school_class')->withPivot('semester', 'frekuensi_per_minggu')->withTimestamps();
+    }
+
     // ── Scope: hanya kelas aktif, urut by order ───────────────────────────
     public function scopeActive($query)
     {
         return $query->where('is_active', true)->orderBy('order');
     }
+
     public static function daftarKategori(): array
     {
         return ['Akademik', 'Tahfidz', 'Takhassus', 'Lainnya'];
     }
+
     // ── Data default 11 kelas ─────────────────────────────────────────────
     public static function defaultClasses(): array
     {

@@ -69,7 +69,7 @@
 
     @stack('styles')
 </head>
-@php
+{{-- @php
     $navGroups = [
         [
             'label' => 'MANAJEMEN DATA',
@@ -137,16 +137,16 @@
             'icon' => 'settings',
             'route' => 'sistem',
             'children' => [
-                ['name' => 'Kelola Permission', 'route' => 'sistem.kelola-permission', 'icon' => 'shield],
+                ['name' => 'Kelola Permission', 'route' => 'coming-soon', 'icon' => 'shield'],
                 ['name' => 'User per Role', 'route' => 'sistem.user-per-role', 'icon' => 'user-round'],
-                ['name' => 'Master Data', 'route' => 'sistem.master-data', 'icon' => 'database'],
+                ['name' => 'Master Data', 'route' => 'master-data.index', 'icon' => 'database'],
                 ['name' => 'pengaturan', 'route' => 'sistem.pengaturan', 'icon' => 'setting'],
             ],
         ],
     ];
 
 
-@endph
+@endph --}}
 
 <body class="bg-gray-50 text-gray-800" x-data="{
     sidebarOpen: localStorage.getItem('sidebarOpen') === 'false' ? false : true,
