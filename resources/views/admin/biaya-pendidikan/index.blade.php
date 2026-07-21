@@ -92,21 +92,33 @@
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $biaya->frekuensi_tagihan }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap"> --}}
                                     data-id="{{ $biaya['id'] }}">
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $biaya['tahun_ajaran'] }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $biaya['jenis_biaya'] }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $biaya['tahun_ajaran_id'] }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $biaya['jenis_biaya_id'] }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $biaya['nominal'] }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $biaya['frekuensi_tagihan'] }}</td>
 
                                     <td class=" py-4 whitespace-nowrap">
                                         <div class="flex gap-1.5">
-                                            <button 
-                                            @click="OpenModal('edit', {
-                                                id: {{ $item['id'] }}
-                                            })"
-                                            class="w-7 h-7 flex items-center justify-center rounded-lg text-teal-500 hover:text-teal-700 transition-colors" title="Edit">
+
+                                            <button
+                                                @click="openModal('edit', {
+        id: {{ $biaya['id'] }},
+        tahun_ajaran_id: {{ $biaya['tahun_ajaran_id'] }},
+        jenis_biaya_id: {{ $biaya['jenis_biaya_id'] }},
+        nominal: {{ $biaya['nominal'] }},
+        frekuensi_tagihan: '{{ $biaya['frekuensi_tagihan'] }}'
+        })"
+                                                class="w-7 h-7 flex items-center justify-center rounded-lg text-teal-500 hover:text-teal-700 transition-colors"
+                                                title="Edit">
                                                 <i data-lucide="edit" class="h-3.5 w-3.5"></i>
                                             </button>
-                                            <button class="w-7 h-7 flex items-center justify-center rounded-lg text-red-500 hover:text-red-700 transition-colors" title="Hapus">
+                                            <button
+                                                @click="confirmDelete(
+        {{ $biaya['id'] }},
+        'Data Biaya Pendidikan'
+        )"
+                                                class="w-7 h-7 flex items-center justify-center rounded-lg text-red-500 hover:text-red-700 transition-colors"
+                                                title="Hapus">
                                                 <i data-lucide="trash-2" class="h-3.5 w-3.5"></i>
                                             </button>
                                         </div>
@@ -145,24 +157,28 @@
                         biaya.
                     </p>
                 </div>
+                {{-- form create --}}
                 <form x-show="modal.mode==='create'" action="{{ route('biaya-pendidikan.store') }}" method="post"
                     class="px-6 py-2 space-y-4">
                     @csrf
                     <div>
                         <label for="tahun_ajaran_id" class="text-sm font-semibold text-gray-700 mb-2">Tahun Ajaran <span
                                 class="text-red-500">*</span></label>
-                        <select name="tahun_ajaran_id" id="tahun_ajaran_id"
-                            class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 mt-2">
+                        <select name="tahun_ajaran_id" x-model="modal.data.tahun_ajaran_id"
+                            class="w-full px-3 py-2.5 border rounded-lg">
+
                             <option value="">Pilih Tahun Ajaran</option>
+
                             @foreach ($tahunAjaran as $item)
                                 <option value="{{ $item['id'] }}">
                                     {{ $item['nama'] }}
                                 </option>
                             @endforeach
+
                         </select>
                     </div>
                     <div>
-                        <label for="jenis_biaya_id" class="text-sm font-semibold text-gray-700 mb-2">Tahun Ajaran <span
+                        <label for="jenis_biaya_id" class="text-sm font-semibold text-gray-700 mb-2">Jenis Biaya<span
                                 class="text-red-500">*</span></label>
                         <select name="jenis_biaya_id" id="jenis_biaya_id"
                             class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 mt-2">
@@ -179,6 +195,22 @@
                         <input type="number" name="nominal" id="nominal" required placeholder="Contoh : 50.000"
                             class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 mt-2">
                     </div>
+                    <div>
+                        <label for="Frekuensi_tagihan" class="text-sm font-semibold text-gray-700 mb-2">Frekuensi
+                            Tagihan<span class="text-red-500">*</span>
+                        </label>
+                        <select name="jenis_biaya_id" id="jenis_biaya_id"
+                            class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 mt-2">
+                            <option value="">Pilih Frekuensi Tagihan</option>
+                            <option value="">minguan</option>
+                            <option value="">tahunan</option>
+                            {{-- @foreach ($jenisBiaya as $item)
+                                <option value="{{ $item['id'] }}">
+                                    {{ $item['nama'] }}
+                                </option>
+                            @endforeach --}}
+                        </select>
+                    </div>
                     <div class=" flex gap-4 justify-end border-t border-gray-200">
                         <button type="button" @click="closeModal()"
                             class=" px-5 py-2 bg-white border border-teal-300 rounded-lg text-gray-600 text-sm font-semibold hover:bg-teal-600/10 my-5">Batal</button>
@@ -187,44 +219,152 @@
                     </div>
                 </form>
 
+                {{-- Form EDIT --}}
+                <form x-show="modal.mode==='edit'" action="#" method="POST" class="px-6 py-2 space-y-4">
+                    <div>
+                        <label for="jenis_biaya_id" class="text-sm font-semibold text-gray-700 mb-2">Tahun Ajaran <span
+                                class="text-red-500">*</span></label>
+                        <select name="tahun_ajaran_id" id="tahun_ajaran_id" x-model="modal.data.tahun_ajaran_id"
+                            class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 mt-2">
+
+                            <option value="">Pilih Tahun Ajaran</option>
+
+                            @foreach ($tahunAjaran as $item)
+                                <option value="{{ $item['id'] }}">
+                                    {{ $item['nama'] }}
+                                </option>
+                            @endforeach
+
+                        </select>
+                    </div>
+                    <div>
+                        <label for="jenis_biaya_id" class="text-sm font-semibold text-gray-700 mb-2">Jenis Biaya<span
+                                class="text-red-500">*</span></label>
+                        <select name="jenis_biaya" id="jenis_biaya" x-model="modal.data.jenis_biaya_id"
+                            class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 mt-2">
+                            <option value="">Pilih Jenis Biaya</option>
+                            @foreach ($jenisBiaya as $item)
+                                <option value="{{ $item['id'] }}">
+                                    {{ $item['nama'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="nominal">Nominal <span class="text-red-500">*</span></label>
+                        <input type="number" name="nominal" id="nominal" x-model="modal.data.nominal" required
+                            placeholder="Contoh : 50.000"
+                            class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 mt-2">
+                    </div>
+                    <div>
+                        <label for="Frekuensi_tagihan" class="text-sm font-semibold text-gray-700 mb-2">Frekuensi
+                            Tagihan<span class="text-red-500">*</span>
+                        </label>
+                        <select name="frekuensi_tagihan" id="frekuensi_tagihan" x-model="modal.data.frekuensi_tagihan"
+                            class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 mt-2">
+                            <option value="">Pilih Frekuensi Tagihan</option>
+
+                            {{-- @foreach ($jenisBiaya as $item)
+                                <option value="{{ $item['id'] }}">
+                                    {{ $item['nama'] }}
+                                </option>
+                            @endforeach --}}
+                        </select>
+                    </div>
+                    <div class=" flex gap-4 justify-end border-t border-gray-200">
+                        <button type="button" @click="closeModal()"
+                            class=" px-5 py-2 bg-white border border-teal-300 rounded-lg text-gray-600 text-sm font-semibold hover:bg-teal-600/10 my-5">Batal</button>
+                        <button type="submit"
+                            class="px-5 py-2 bg-teal-700  rounded-lg text-gray-100 text-sm font-semibold hover:bg-teal-800 my-5">Simpan
+                            Perubahan</button>
+                    </div>
+
+                </form>
             </div>
         </div>
+        {{-- Mpdal Hapus  --}}
+                    <div x-show="deleteModal.open" x-cloak
+                        class="fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4">
+                        <div x-show="deleteModal.open" x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                            class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 text-center">
+                            <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                            </div>
+                            <h3 class="font-bold text-gray-800 mb-1">Hapus Biaya Pendidikan</h3>
+                            <p class="text-sm text-gray-500 mb-5">Anda yakin akan menghapus Biaya Pendidikan "<strong
+                                    x-text="deleteModal.name"></strong>" secara permanen ?</p>
+                            <div class="flex gap-3">
+                                <button @click="deleteModal.open=false"
+                                    class="flex-1 px-4 py-2.5 border border-gray-200 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50">Batal</button>
+                                <form :action="'/biaya-pendidikan/' + deleteModal.id" method="POST" class="flex-1">
+                                    @csrf @method('DELETE')
+                                    <button type="submit"
+                                        class="w-full px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-semibold">Ya,
+                                        Hapus</button>
+                                </form>
 
-    </div>
-@endsection
+                            </div>
+                        </div>
 
-@push('scripts')
-    <script>
-        function biayaPendidikanManager() {
-            return {
-                modal: {
-                    open: false,
-                    mode: 'create',
-                    data: null
-                },
-                deleteModal: {
-                    open: false,
-                    id: null,
-                    name: ''
-                },
-                openModal(mode, data = null) {
-                    this.modal.open = true;
-                    this.modal.mode = mode;
-                    this.modal.data = data;
-                },
+                    </div>
+    @endsection
 
-                closeModal() {
-                    this.modal.open = false;
-                    this.modal.data = null;
-                },
-                confirmDelete(id, name) {
-                    this.deleteModal = {
-                        open: true,
-                        id,
-                        name
-                    };
-                },
+    @push('scripts')
+        <script>
+            function biayaPendidikanManager() {
+                return {
+                    modal: {
+                        open: false,
+                        mode: 'create',
+                        data: null
+                    },
+                    deleteModal: {
+                        open: false,
+                        id: null,
+                        name: ''
+                    },
+                    // openModal(mode, data = null) {
+                    //     this.modal.open = true;
+                    //     this.modal.mode = mode;
+                    //     this.modal.data = data;
+                    // },
+
+                    openModal(mode, data = null) {
+                        this.modal.mode = mode;
+                        this.modal.open = true;
+
+                        if (mode === 'edit') {
+                            this.modal.data = {
+                                ...data
+                            };
+                        } else {
+                            this.modal.data = {
+                                tahun_ajaran_id: '',
+                                jenis_biaya_id: '',
+                                nominal: '',
+                                frekuensi_tagihan: ''
+                            };
+                        }
+                    },
+
+                    closeModal() {
+                        this.modal.open = false;
+                        this.modal.data = null;
+                    },
+
+                    confirmDelete(id, name) {
+                        this.deleteModal = {
+                            open: true,
+                            id: id,
+                            name: name
+                        };
+                    },
+                }
             }
-        }
-    </script>
-@endpush
+        </script>
+    @endpush

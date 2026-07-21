@@ -13,15 +13,15 @@ class BiayaPendidikanController extends Controller
         $biayaPendidikan = [
             [
                 'id' => 1,
-                'tahun_ajaran' => '2025/2026',
-                'jenis_biaya' => 'SPP',
+                'tahun_ajaran_id' => '2',
+                'jenis_biaya_id' => '1',
                 'nominal' => 500000,
                 'frekuensi_tagihan' => 'Bulanan',
             ],
             [
                 'id' => 2,
-                'tahun_ajaran' => '2025/2026',
-                'jenis_biaya' => 'Seragam',
+                'tahun_ajaran_id' => '1',
+                'jenis_biaya_id' => '2',
                 'nominal' => 1000000,
                 'frekuensi_tagihan' => 'Tahunan',
             ],
@@ -35,7 +35,7 @@ class BiayaPendidikanController extends Controller
                 'id' => 2,
                 'nama' => '2025/2026',
             ],
-            [
+        [
                 'id' => 3,
                 'nama' => '2026/2027',
             ],
@@ -59,4 +59,11 @@ class BiayaPendidikanController extends Controller
     {
         
     }
+    public function destroy($id)
+    {
+    // sementara hanya testing
+
+    dd("ID yang akan dihapus : " . $id);
+    }
+
 }

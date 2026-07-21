@@ -244,6 +244,7 @@ use App\Http\Controllers\Admin\BiayaPendidikanController;
 
 Route::get('biaya-pendidikan', [BiayaPendidikanController::class, 'index'])->name('biaya-pendidikan.index');
 Route::post('/biaya-pendidikan', [BiayaPendidikanController::class, 'store'])->name('biaya-pendidikan.store');
+Route::delete('/biaya-pendidikan/{id}', [BiayaPendidikanController::class, 'destroy'])->name('biaya-pendidkan');
 
 // PSB (Penerimaan Santri Baru)
 Route::prefix('psb')
