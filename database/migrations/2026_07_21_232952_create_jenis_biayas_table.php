@@ -7,22 +7,21 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Master data Jenis Biaya (Pendaftaran, SPP, Uang Gedung, dll).
      */
     public function up(): void
     {
-        Schema::create('biaya_pendidikans', function (Blueprint $table) {
+        Schema::create('jenis_biayas', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
+            $table->text('keterangan')->nullable();
+            $table->boolean('status')->default(true); // aktif / nonaktif
             $table->timestamps();
-            $table->
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('biaya_pendidikans');
+        Schema::dropIfExists('jenis_biayas');
     }
 };

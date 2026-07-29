@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 
 class TahunAjaran extends Model
 {
@@ -31,5 +33,11 @@ class TahunAjaran extends Model
     public function getSemesterLabelAttribute(): string
     {
         return $this->semester === 'ganjil' ? 'Semester 1 (Ganjil)' : 'Semester 2 (Genap)';
+    }
+
+    // relasi ke biaya pendidikan
+    public function biayaPendidikans()
+    {
+        return $this->hasMany(BiayaPendidikan::class);
     }
 }

@@ -31,6 +31,71 @@
                 <span class="text-gray-300">/</span>
                 <span class="font-medium text-gray-800">Biaya Pendidikan</span>
             </nav>
+
+            {{-- Alert  --}}
+            <div class="fixed bottom-6 right-6 z-100 flex flex-col items-end gap-3 pointer-events-none">
+            
+                @if (session('success'))
+                <div x-data="{ show: false }" x-init="show = true; setTimeout(() => show = false, 4000)" x-show="show"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 translate-y-3 translate-x-3"
+                    x-transition:enter-end="opacity-100 translate-y-0 translate-x-0"
+                    x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0"
+                    x-transition:leave-end="opacity-0 translate-x-3"
+                    class="pointer-events-auto w-80 bg-white rounded-xl shadow-lg border border-gray-100 border-l-4 border-l-emerald-500 p-4 flex items-start gap-3">
+                    <div class="shrink-0 w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-800">Berhasil!</p>
+                        <p class="text-sm text-gray-500 mt-0.5">{{ session('success') }}</p>
+                    </div>
+                    <button @click="show = false" class="shrink-0 text-gray-400 hover:text-gray-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                @endif
+            
+                @if ($errors->any())
+                <div x-data="{ show: false }" x-init="show = true; setTimeout(() => show = false, 5000)" x-show="show"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 translate-y-3 translate-x-3"
+                    x-transition:enter-end="opacity-100 translate-y-0 translate-x-0"
+                    x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0"
+                    x-transition:leave-end="opacity-0 translate-x-3"
+                    class="pointer-events-auto w-80 bg-white rounded-xl shadow-lg border border-gray-100 border-l-4 border-l-red-500 p-4 flex items-start gap-3">
+                    <div class="shrink-0 w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 9v3.75m0 3.75h.007M10.29 3.86l-8.18 14.18A1.5 1.5 0 003.42 20.5h17.16a1.5 1.5 0 001.31-2.46L13.71 3.86a1.5 1.5 0 00-2.42 0z" />
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-800">Terjadi Kesalahan</p>
+                        <ul class="text-sm text-gray-500 mt-0.5 space-y-0.5">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <button @click="show = false" class="shrink-0 text-gray-400 hover:text-gray-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                @endif
+            </div>
+
+            {{-- header --}}
             <div class="flex flex-col item-start justify-between mt-12 mb-4 mx-4 md:mx-10 lg:mx-20 xl:mx-60">
                 <div class="flex gap-4 justify-between">
                     <h1 class="text-2xl font-bold text-gray-800">Biaya Pendidikan</h1>
@@ -49,28 +114,39 @@
             </div>
 
             {{-- filter tahuhn ajaran dan jenis biaya --}}
-
-            <div class="flex gap-4 mt-6 mx-4 md:mx-10 lg:mx-20 xl:mx-60">
+            <form action="{{ route('biaya-pendidikan.index') }}" method="GET"
+                class="flex gap-4 mt-6 mx-4 md:mx-10 lg:mx-20 xl:mx-60">
                 <div class="relative w-60 ">
-                    <select
-                        class="w-full px-3 py-3 pr-10 appearance-none border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 hover:bg-gray-50 transition-colors sm:text-sm cursor-pointer"
-                        name="tahun_ajaran" id="tahun_ajaran">
-                        <option class="text-gray-300 mr-5" value="">Pilih Tahun Ajaran</option>
+                    <select name="tahun_ajaran_id" id="tahun_ajaran_id" onchange="this.form.submit()"
+                        class="w-full px-3 py-3 pr-10 appearance-none border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 hover:bg-gray-50 transition-colors sm:text-sm cursor-pointer">
+                        <option class="text-gray-800 mr-5" value="">Pilih Tahun Ajaran</option>
+                        @foreach ($tahunAjaran as $item)
+                            <option class="text-gray-800 mr-5" value="{{ $item->id }}" @selected(request('tahun_ajaran_id') == $item->id)>
+                                {{ $item->nama }}
+                            </option>
+                        @endforeach
                     </select>
                     <i data-lucide="chevron-down"
                         class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none"></i>
                 </div>
                 <div class="relative w-60">
-                    <select
+                    <select name="jenis_biaya_id" id="jenis_biaya_id" onchange="this.form.submit()"
                         class="w-full px-3 py-3 pr-10 appearance-none border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 hover:bg-gray-50 transition-colors sm:text-sm cursor-pointer"
-                        name="jenis_biaya" id="jenis_biaya">
-                        <option class="text-gray-300 mr-5" value="">Pilih Jenis Biaya</option>
+                        name="jenis_biaya_id" id="jenis_biaya_id">
+                        <option class="text-gray-800 mr-5" value="">Pilih Jenis Biaya</option>
+                        @foreach ($jenisBiaya as $item)
+                            <option class="text-gray-800 mr-5" value="{{ $item->id }}" @selected(request('jenis_biaya_id') == $item->id)>
+                                {{ $item->nama }}
+                            </option>
+                        @endforeach
                     </select>
                     <i data-lucide="chevron-down"
                         class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none"></i>
                 </div>
 
-            </div>
+            </form>
+
+            {{-- table --}}
             <div class="mt-6 bg-white rounded-xl border-gray-200 shadow-sm overflow-hidden mx-4 md:mx-10 lg:mx-20 xl:mx-60">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
@@ -85,53 +161,45 @@
                         </thead>
                         <tbody id="biaya-pendidikan-table-body">
                             @forelse ($biayaPendidikan as $biaya)
-                                <tr class="data-row border-b border-gray-200 transtion-colors" {{-- data-id="{{ $biaya->id }}">
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $biaya->tahun_ajaran }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $biaya->jenis_biaya }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $biaya->nominal }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $biaya->frekuensi_tagihan }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap"> --}}
-                                    data-id="{{ $biaya['id'] }}">
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $biaya['tahun_ajaran_id'] }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $biaya['jenis_biaya_id'] }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $biaya['nominal'] }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $biaya['frekuensi_tagihan'] }}</td>
-
+                                <tr class="data-row border-b border-gray-200 transtion-colors"
+                                    data-id="{{ $biaya->id }}">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{ $biaya->tahunAjaran->nama ?? ($biaya->tahunAjaran->tahunAjaran ?? '-') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $biaya->jenisBiaya->nama }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        Rp{{ number_format($biaya->nominal, 0, ',', '.') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $biaya->frekuensi }}</td>
+                                    
                                     <td class=" py-4 whitespace-nowrap">
                                         <div class="flex gap-1.5">
-
-                                            <button
-                                                @click="openModal('edit', {
-        id: {{ $biaya['id'] }},
-        tahun_ajaran_id: {{ $biaya['tahun_ajaran_id'] }},
-        jenis_biaya_id: {{ $biaya['jenis_biaya_id'] }},
-        nominal: {{ $biaya['nominal'] }},
-        frekuensi_tagihan: '{{ $biaya['frekuensi_tagihan'] }}'
-        })"
-                                                class="w-7 h-7 flex items-center justify-center rounded-lg text-teal-500 hover:text-teal-700 transition-colors"
+                                    
+                                            <button @click="openModal('edit', {
+                                            id: {{ $biaya->id }},
+                                            tahun_ajaran_id: {{ $biaya->tahun_ajaran_id }},
+                                            jenis_biaya_id: {{ $biaya->jenis_biaya_id }},
+                                            nominal: {{ $biaya->nominal }},
+                                            frekuensi_tagihan: '{{ $biaya->frekuensi }}'
+                                            })" class="w-7 h-7 flex items-center justify-center rounded-lg text-teal-500 hover:text-teal-700 transition-colors"
                                                 title="Edit">
                                                 <i data-lucide="edit" class="h-3.5 w-3.5"></i>
                                             </button>
-                                            <button
-                                                @click="confirmDelete(
-        {{ $biaya['id'] }},
-        'Data Biaya Pendidikan'
-        )"
-                                                class="w-7 h-7 flex items-center justify-center rounded-lg text-red-500 hover:text-red-700 transition-colors"
+                                            <button @click="confirmDelete(
+                                            {{ $biaya['id'] }},
+                                            'Data Biaya Pendidikan'
+                                            )" class="w-7 h-7 flex items-center justify-center rounded-lg text-red-500 hover:text-red-700 transition-colors"
                                                 title="Hapus">
                                                 <i data-lucide="trash-2" class="h-3.5 w-3.5"></i>
                                             </button>
                                         </div>
                                     </td>
-
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data biaya
-                                        pendidikan.</td>
-                                </tr>
-                            @endforelse
-
+                                    
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data biaya
+                                            pendidikan.</td>
+                                    </tr>
+                                    @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -170,8 +238,8 @@
                             <option value="">Pilih Tahun Ajaran</option>
 
                             @foreach ($tahunAjaran as $item)
-                                <option value="{{ $item['id'] }}">
-                                    {{ $item['nama'] }}
+                                <option value="{{ $item->id }}">
+                                    {{ $item->nama ?? ($item->tahun_ajaran ?? $item->id) }}
                                 </option>
                             @endforeach
 
@@ -184,8 +252,8 @@
                             class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 mt-2">
                             <option value="">Pilih Jenis Biaya</option>
                             @foreach ($jenisBiaya as $item)
-                                <option value="{{ $item['id'] }}">
-                                    {{ $item['nama'] }}
+                                <option value="{{ $item->id }}">
+                                    {{ $item->nama }}
                                 </option>
                             @endforeach
                         </select>
@@ -196,20 +264,25 @@
                             class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 mt-2">
                     </div>
                     <div>
-                        <label for="Frekuensi_tagihan" class="text-sm font-semibold text-gray-700 mb-2">Frekuensi
+                        <label for="frekuensi" class="text-sm font-semibold text-gray-700 mb-2">Frekuensi
                             Tagihan<span class="text-red-500">*</span>
                         </label>
-                        <select name="jenis_biaya_id" id="jenis_biaya_id"
+                        <select name="frekuensi" id="frekuensi"
                             class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 mt-2">
                             <option value="">Pilih Frekuensi Tagihan</option>
-                            <option value="">minguan</option>
-                            <option value="">tahunan</option>
-                            {{-- @foreach ($jenisBiaya as $item)
-                                <option value="{{ $item['id'] }}">
-                                    {{ $item['nama'] }}
+                            @foreach (['sekali', 'harian', 'mingguan', 'bulanan', 'semester', 'tahunan'] as $frekuensi)
+                                <option value="{{ $frekuensi }}" @selected(old('frekuensi') == $frekuensi)>
+                                    {{ ucfirst($frekuensi) }}
                                 </option>
-                            @endforeach --}}
+                            @endforeach
+
                         </select>
+
+                        @error('frekuensi')
+                            <p class="text-red-500 text-sm mt-1">
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                     <div class=" flex gap-4 justify-end border-t border-gray-200">
                         <button type="button" @click="closeModal()"
@@ -220,7 +293,10 @@
                 </form>
 
                 {{-- Form EDIT --}}
-                <form x-show="modal.mode==='edit'" action="#" method="POST" class="px-6 py-2 space-y-4">
+                <form x-show="modal.mode==='edit'" :action="'/biaya-pendidikan/' + modal.data.id" method="POST"
+                    class="px-6 py-2 space-y-4">
+                    @csrf
+                    @method('PUT')
                     <div>
                         <label for="jenis_biaya_id" class="text-sm font-semibold text-gray-700 mb-2">Tahun Ajaran <span
                                 class="text-red-500">*</span></label>
@@ -230,8 +306,8 @@
                             <option value="">Pilih Tahun Ajaran</option>
 
                             @foreach ($tahunAjaran as $item)
-                                <option value="{{ $item['id'] }}">
-                                    {{ $item['nama'] }}
+                                <option value="{{ $item->id }}">
+                                    {{ $item->nama }}
                                 </option>
                             @endforeach
 
@@ -240,12 +316,12 @@
                     <div>
                         <label for="jenis_biaya_id" class="text-sm font-semibold text-gray-700 mb-2">Jenis Biaya<span
                                 class="text-red-500">*</span></label>
-                        <select name="jenis_biaya" id="jenis_biaya" x-model="modal.data.jenis_biaya_id"
+                        <select name="jenis_biaya_id" id="jenis_biaya_id" x-model="modal.data.jenis_biaya_id"
                             class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 mt-2">
                             <option value="">Pilih Jenis Biaya</option>
                             @foreach ($jenisBiaya as $item)
-                                <option value="{{ $item['id'] }}">
-                                    {{ $item['nama'] }}
+                                <option value="{{ $item->id }}">
+                                    {{ $item->nama }}
                                 </option>
                             @endforeach
                         </select>
@@ -257,19 +333,25 @@
                             class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 mt-2">
                     </div>
                     <div>
-                        <label for="Frekuensi_tagihan" class="text-sm font-semibold text-gray-700 mb-2">Frekuensi
+                        <label for="frekuensi" class="text-sm font-semibold text-gray-700 mb-2">Frekuensi
                             Tagihan<span class="text-red-500">*</span>
                         </label>
-                        <select name="frekuensi_tagihan" id="frekuensi_tagihan" x-model="modal.data.frekuensi_tagihan"
+                        <select name="frekuensi" id="frekuensi" x-model="modal.data.frekuensi"
                             class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 mt-2">
                             <option value="">Pilih Frekuensi Tagihan</option>
-
-                            {{-- @foreach ($jenisBiaya as $item)
-                                <option value="{{ $item['id'] }}">
-                                    {{ $item['nama'] }}
+                            @foreach (['sekali', 'harian', 'mingguan', 'bulanan', 'semester', 'tahunan'] as $frekuensi)
+                                <option value="{{ $frekuensi }}" @selected(old('frekuensi') == $frekuensi)>
+                                    {{ ucfirst($frekuensi) }}
                                 </option>
-                            @endforeach --}}
+                            @endforeach
+
                         </select>
+
+                        @error('frekuensi')
+                            <p class="text-red-500 text-sm mt-1">
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                     <div class=" flex gap-4 justify-end border-t border-gray-200">
                         <button type="button" @click="closeModal()"
@@ -282,36 +364,35 @@
                 </form>
             </div>
         </div>
-        {{-- Mpdal Hapus  --}}
-                    <div x-show="deleteModal.open" x-cloak
-                        class="fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4">
-                        <div x-show="deleteModal.open" x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
-                            class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 text-center">
-                            <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
-                            </div>
-                            <h3 class="font-bold text-gray-800 mb-1">Hapus Biaya Pendidikan</h3>
-                            <p class="text-sm text-gray-500 mb-5">Anda yakin akan menghapus Biaya Pendidikan "<strong
-                                    x-text="deleteModal.name"></strong>" secara permanen ?</p>
-                            <div class="flex gap-3">
-                                <button @click="deleteModal.open=false"
-                                    class="flex-1 px-4 py-2.5 border border-gray-200 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50">Batal</button>
-                                <form :action="'/biaya-pendidikan/' + deleteModal.id" method="POST" class="flex-1">
-                                    @csrf @method('DELETE')
-                                    <button type="submit"
-                                        class="w-full px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-semibold">Ya,
-                                        Hapus</button>
-                                </form>
+        {{-- Mpdal Hapus --}}
+        <div x-show="deleteModal.open" x-cloak
+            class="fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4">
+            <div x-show="deleteModal.open" x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 text-center">
+                <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <h3 class="font-bold text-gray-800 mb-1">Hapus Biaya Pendidikan</h3>
+                <p class="text-sm text-gray-500 mb-5">Anda yakin akan menghapus Biaya Pendidikan "<strong
+                        x-text="deleteModal.name"></strong>" secara permanen ?</p>
+                <div class="flex gap-3">
+                    <button @click="deleteModal.open=false"
+                        class="flex-1 px-4 py-2.5 border border-gray-200 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50">Batal</button>
+                    <form :action="'/biaya-pendidikan/' + deleteModal.id" method="POST" class="flex-1">
+                        @csrf @method('DELETE')
+                        <button type="submit"
+                            class="w-full px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-semibold">Ya,
+                            Hapus</button>
+                    </form>
 
-                            </div>
-                        </div>
+                </div>
+            </div>
 
-                    </div>
+        </div>
     @endsection
 
     @push('scripts')
@@ -347,7 +428,7 @@
                                 tahun_ajaran_id: '',
                                 jenis_biaya_id: '',
                                 nominal: '',
-                                frekuensi_tagihan: ''
+                                frekuensi: ''
                             };
                         }
                     },

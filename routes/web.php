@@ -242,9 +242,13 @@ Route::prefix('akademik')
 // biaya pendidikan
 use App\Http\Controllers\Admin\BiayaPendidikanController;
 
-Route::get('biaya-pendidikan', [BiayaPendidikanController::class, 'index'])->name('biaya-pendidikan.index');
-Route::post('/biaya-pendidikan', [BiayaPendidikanController::class, 'store'])->name('biaya-pendidikan.store');
-Route::delete('/biaya-pendidikan/{id}', [BiayaPendidikanController::class, 'destroy'])->name('biaya-pendidkan');
+// Route::get('biaya-pendidikan', [BiayaPendidikanController::class, 'index'])->name('biaya-pendidikan.index');
+// Route::post('/biaya-pendidikan', [BiayaPendidikanController::class, 'store'])->name('biaya-pendidikan.store');
+// Route::put('/biaya-pendidikan/{biayaPendidikan}', [BiayaPendidikanController::class, 'update'])
+//     ->name('biaya-pendidikan.update');
+// Route::delete('/biaya-pendidikan/{id}', [BiayaPendidikanController::class, 'destroy'])->name('biaya-pendidkan');
+
+Route::resource('biaya-pendidikan', BiayaPendidikanController::class);
 
 // PSB (Penerimaan Santri Baru)
 Route::prefix('psb')
